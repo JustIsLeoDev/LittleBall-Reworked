@@ -11,6 +11,9 @@ var nombres_canciones: Array[String] = []
 var rutas_canciones: Array[String] = []
 var rutas_por_cancion: Dictionary = {}
 
+var album_saliendo: bool = false
+var album_en_pantalla: bool = false
+
 var player_actual: AudioStreamPlayer
 var player_siguiente: AudioStreamPlayer
 
@@ -28,7 +31,27 @@ var groups: Array[Array] = []
 @export var velocidad_rotacion: float = 0.8
 @export var bpm_referencia: float = 120.0
 @export var distancia_icono: float = 150.0
-@export var tiempo_meneo: float = 0.12
+
+# Animación de salida del álbum.
+@export_group("Animación de salida")
+
+@export var tiempo_frenazo: float = 0.6
+@export var angulo_frenazo: float = 15.0
+@export var ciclos_frenazo: float = 2.0
+
+@export var tiempo_impulso: float = 1.0
+@export var angulo_impulso: float = 50.0
+@export var intensidad_temblor: float = 2.0
+@export var frecuencia_temblor: float = 12.0
+
+@export var tiempo_regreso: float = 0.8
+
+@export var tiempo_estabilizacion: float = 0.35
+@export var angulo_estabilizacion: float = 2.0
+
+@export var tiempo_bajada: float = 0.8
+
+@export_group("Texto")
 
 @export var texto_velocidad: float = 5.0
 @export var texto_retraso: float = 0.035
@@ -58,8 +81,17 @@ func _ready() -> void:
 		player.volume_db = VOLUMEN_SILENCIO_DB
 		player.stop()
 
+	# Detectar cuando termina naturalmente cada canción.
+	if not music_player_1.finished.is_connected(_on_player_1_finished):
+		music_player_1.finished.connect(_on_player_1_finished)
+	if not music_player_2.finished.is_connected(_on_player_2_finished):
+		music_player_2.finished.connect(_on_player_2_finished)
+
+	PM.info_print("MÚSICA: Señales finished conectadas.")
+
 	player_actual = music_player_1
 	player_siguiente = music_player_2
+	PM.info_print("REPRODUCTORES: Inicial actual=" + player_actual.name + " | siguiente=" + player_siguiente.name)
 
 	try_play_music_por_ruta("res://Music/s1222.ogg")
 
@@ -195,6 +227,14 @@ func play_music(
 
 	var cambiar_album: bool = album_actual != album_path and album_path != ""
 
+	PM.info_print("REPRODUCCIÓN: Solicitud: " + nueva_cancion.resource_path)
+	PM.info_print("REPRODUCCIÓN: Álbum='" + album_path + "' | Título='" + song_title + "'")
+
+	# Mantener player_actual apuntando al reproductor que está sonando.
+	if not player_actual.playing and player_siguiente.playing:
+		PM.info_print("REPRODUCCIÓN: Corrigiendo referencias de reproductores.")
+		_intercambiar_reproductores()
+
 	if cambiar_album and not _album_esta_oculto():
 		album_salir()
 
@@ -206,7 +246,10 @@ func play_music(
 
 	if player_actual.playing:
 		var tiempo_actual: float = player_actual.get_playback_position()
+		PM.info_print("CROSSFADE: " + player_actual.name + " -> " + player_siguiente.name)
+		PM.info_print("CROSSFADE: Nuevo stream=" + nueva_cancion.resource_path + " | posición=" + str(tiempo_actual))
 		player_siguiente.play(tiempo_actual)
+		PM.satisfactory_print("CROSSFADE: " + player_siguiente.name + " inició. Playing=" + str(player_siguiente.playing))
 
 		tween_fade.tween_property(
 			player_actual,
@@ -236,6 +279,7 @@ func play_music(
 		player_actual.stream = nueva_cancion
 		player_actual.volume_db = VOLUMEN_SILENCIO_DB
 		player_actual.play()
+		PM.satisfactory_print("REPRODUCCIÓN: " + player_actual.name + " inició " + nueva_cancion.resource_path + ". Playing=" + str(player_actual.playing))
 
 		tween_fade.tween_property(
 			player_actual,
@@ -290,6 +334,9 @@ func try_play_music_por_ruta(ruta: String, desde_player: bool = false) -> void:
 
 
 func album_entrar(album_path: String, rotable: bool, song_title: String) -> void:
+	# Cancelar una posible animación de salida.
+	album_saliendo = false
+
 	if album_tween and album_tween.is_running():
 		album_tween.kill()
 
@@ -300,6 +347,8 @@ func album_entrar(album_path: String, rotable: bool, song_title: String) -> void
 			Album_texture.texture = nueva_textura
 
 	album_actual = album_path
+	album_en_pantalla = true
+	PM.satisfactory_print("ÁLBUM: Entrada iniciada. Ruta='" + album_path + "'")
 	album_rotando = false
 	Album_texture.rotation = 0.0
 
@@ -329,52 +378,173 @@ func album_entrar(album_path: String, rotable: bool, song_title: String) -> void
 
 
 func album_salir() -> void:
+	if album_saliendo:
+		PM.error_print("ÁLBUM: Ya está saliendo.")
+		return
+
+	PM.satisfactory_print("ÁLBUM: Iniciando animación de frenazo.")
+	album_saliendo = true
 	album_rotando = false
 
 	if album_tween and album_tween.is_running():
 		album_tween.kill()
 
+	# Conservar el ángulo actual sin saltos.
+	var rotacion_inicial: float = wrapf(
+		Album_texture.rotation,
+		-PI,
+		PI
+	)
+
+	Album_texture.rotation = rotacion_inicial
+
+	# Determinar el sentido original de giro.
+	var sentido_giro: float = signf(velocidad_rotacion * bpm_actual)
+
+	if is_zero_approx(sentido_giro):
+		sentido_giro = 1.0
+
 	album_tween = create_tween()
 
-	album_tween.tween_property(
-		Album_texture,
-		"rotation",
-		deg_to_rad(12.0),
-		tiempo_meneo
+	# 1. Frenazo: sacudida de hasta 15°.
+	album_tween.tween_method(
+		Callable(self, "_animar_frenazo").bind(
+			rotacion_inicial,
+			deg_to_rad(angulo_frenazo)
+		),
+		0.0,
+		tiempo_frenazo,
+		tiempo_frenazo
+	).set_trans(Tween.TRANS_LINEAR)
+
+	# 2. Impulso de 50° en el sentido original, con vibración.
+	var rotacion_impulso: float = (
+		rotacion_inicial
+		+ sentido_giro * deg_to_rad(angulo_impulso)
 	)
 
-	album_tween.tween_property(
-		Album_texture,
-		"rotation",
-		deg_to_rad(-12.0),
-		tiempo_meneo
-	)
+	album_tween.tween_method(
+		Callable(self, "_animar_impulso").bind(
+			rotacion_inicial,
+			rotacion_impulso,
+			deg_to_rad(intensidad_temblor)
+		),
+		0.0,
+		tiempo_impulso,
+		tiempo_impulso
+	).set_trans(Tween.TRANS_LINEAR)
 
+	# 3. Regresar al cero en sentido contrario.
+	# La transición empieza rápida y frena al acercarse a 0°.
 	album_tween.tween_property(
 		Album_texture,
 		"rotation",
 		0.0,
-		tiempo_meneo
-	)
+		tiempo_regreso
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
-	album_tween.set_parallel(true)
+	# 4. Pequeña vibración de estabilización.
+	album_tween.tween_method(
+		Callable(self, "_animar_estabilizacion").bind(
+			deg_to_rad(angulo_estabilizacion)
+		),
+		0.0,
+		tiempo_estabilizacion,
+		tiempo_estabilizacion
+	).set_trans(Tween.TRANS_LINEAR)
 
+	# 5. Bajar el icono.
 	album_tween.tween_property(
 		Album_texture,
 		"offset_top",
 		album_offset_top + distancia_icono,
-		fade_time
+		tiempo_bajada
 	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 
-	album_tween.tween_property(
+	album_tween.parallel().tween_property(
 		Album_texture,
 		"offset_bottom",
 		album_offset_bottom + distancia_icono,
-		fade_time
+		tiempo_bajada
 	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+
+	# 6. Finalizar.
+	album_tween.tween_callback(func() -> void:
+		album_saliendo = false
+		album_en_pantalla = false
+		album_actual = ""
+
+		PM.satisfactory_print("ÁLBUM: Icono escondido. Salida completada.")
+	)
+
+
+# Sacudida causada por el frenazo.
+func _animar_frenazo(
+	tiempo: float,
+	base: float,
+	amplitud: float
+) -> void:
+	var progreso: float = tiempo / maxf(tiempo_frenazo, 0.001)
+
+	var oscilacion: float = sin(
+		progreso * TAU * ciclos_frenazo
+	)
+
+	# La sacudida pierde fuerza progresivamente.
+	var amortiguacion: float = 1.0 - progreso
+
+	Album_texture.rotation = (
+		base + oscilacion * amplitud * amortiguacion
+	)
+
+
+# Impulso hacia el sentido original con vibración.
+func _animar_impulso(
+	tiempo: float,
+	inicio: float,
+	destino: float,
+	amplitud: float
+) -> void:
+	var progreso: float = tiempo / maxf(tiempo_impulso, 0.001)
+
+	var rotacion_base: float = lerpf(
+		inicio,
+		destino,
+		progreso
+	)
+
+	# Vibración que aparece y desaparece durante el impulso.
+	var temblor: float = (
+		sin(tiempo * TAU * frecuencia_temblor)
+		* amplitud
+		* sin(progreso * PI)
+	)
+
+	Album_texture.rotation = rotacion_base + temblor
+
+
+# Pequeño temblor al llegar a 0°.
+func _animar_estabilizacion(
+	tiempo: float,
+	amplitud: float
+) -> void:
+	var progreso: float = (
+		tiempo / maxf(tiempo_estabilizacion, 0.001)
+	)
+
+	var oscilacion: float = sin(
+		progreso * TAU * 3.0
+	)
+
+	Album_texture.rotation = (
+		oscilacion
+		* amplitud
+		* (1.0 - progreso)
+	)
 
 
 func _ocultar_texto() -> void:
+	PM.satisfactory_print("TEXTO: Iniciando desaparición del título: " + texto_actual)
 	texto_id += 1
 	var id_actual: int = texto_id
 
@@ -461,6 +631,8 @@ func stop_music() -> void:
 	tween_fade.chain().tween_callback(func() -> void:
 		player_actual.stop()
 		player_siguiente.stop()
+
+		_comprobar_salir_album()
 	)
 
 
@@ -468,3 +640,55 @@ func _intercambiar_reproductores() -> void:
 	var temp: AudioStreamPlayer = player_actual
 	player_actual = player_siguiente
 	player_siguiente = temp
+	PM.info_print("REPRODUCTORES: Actual=" + player_actual.name + " | Siguiente=" + player_siguiente.name)
+
+
+func _comprobar_salir_album() -> void:
+	PM.info_print("MÚSICA: Comprobando final de reproducción.")
+	_debug_reproductor(music_player_1)
+	_debug_reproductor(music_player_2)
+
+	if album_saliendo:
+		PM.info_print("MÚSICA: La salida del álbum ya está en curso.")
+		return
+
+	if music_player_1.playing or music_player_2.playing:
+		PM.info_print("MÚSICA: Otro reproductor continúa activo.")
+		return
+
+	if not album_en_pantalla:
+		PM.info_print("MÚSICA: No hay un álbum visible que ocultar.")
+		return
+
+	PM.satisfactory_print("MÚSICA: Ambos reproductores están detenidos. Cerrando álbum.")
+	_ocultar_texto()
+	album_salir()
+
+
+func _on_player_1_finished() -> void:
+	PM.satisfactory_print("FINISHED: Player 1 terminó: " + (music_player_1.stream.resource_path if music_player_1.stream != null else "sin stream"))
+	_comprobar_salir_album()
+
+
+func _on_player_2_finished() -> void:
+	PM.satisfactory_print("FINISHED: Player 2 terminó: " + (music_player_2.stream.resource_path if music_player_2.stream != null else "sin stream"))
+	_comprobar_salir_album()
+
+
+func _debug_reproductor(player: AudioStreamPlayer) -> void:
+	var nombre_stream: String = "Sin stream"
+	var duracion: float = 0.0
+	var posicion: float = 0.0
+
+	if player.stream != null:
+		nombre_stream = player.stream.resource_path
+		duracion = player.stream.get_length()
+		posicion = player.get_playback_position()
+
+	PM.info_print(
+		player.name
+		+ " | Playing: " + str(player.playing)
+		+ " | Stream: " + nombre_stream
+		+ " | Posición: " + str(snappedf(posicion, 0.01))
+		+ " / " + str(duracion)
+	)

@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" uid="uid://bruul1reqjvqw" path="res://Scripts/MusicManager.gd" id="1_iysw5"]
 [ext_resource type="Texture2D" uid="uid://bvw2uaf507mri" path="res://Sprites/littleball2.png" id="2_6b4sy"]
+[ext_resource type="FontFile" uid="uid://dnvf0w56viu2b" path="res://fonts/MontenegrinGothicOne-Regular.ttf" id="3_4y3dx"]
+
+[sub_resource type="Theme" id="Theme_6b4sy"]
+default_font = ExtResource("3_4y3dx")
 
 [node name="Node" type="Node" unique_id=594247782]
 process_mode = 3
@@ -46,9 +50,13 @@ anchor_right = 0.758
 anchor_bottom = 0.836
 offset_right = 40.0
 offset_bottom = 40.0
+theme = SubResource("Theme_6b4sy")
 bbcode_enabled = true
 text = "PlaceHolder"
 horizontal_alignment = 2
 visible_characters_behavior = 4
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer" unique_id=1378424075]
+
+[connection signal="finished" from="Player 1" to="." method="_on_player_1_finished"]
+[connection signal="finished" from="Player 2" to="." method="_on_player_2_finished"]

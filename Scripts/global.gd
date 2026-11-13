@@ -182,7 +182,7 @@ var player_rainbow_speed: float = 0.5
 var player_target_scale: float = 64.0
 var player_trail_enabled: bool = true
 var is_in_level = false
-var dificulty = "masoquista"
+var dificulty = "facil" #masoquista, facil, normal, dificil
 var player_trail_type: int = 1
 var player_trail_style: int = 0
 var level_text
@@ -225,7 +225,7 @@ var datos_canciones: Array[Array] = [
 	["s11", "res://Music/s11.ogg", "", 185.0, true],
 	["La cancion que más odio", "res://Music/s112.ogg", "", 185.0, true],
 	["s1222", "res://Music/s1222.ogg", "", 165.0, true],
-	["silent", "res://Music/silent.ogg", "", 0.0, true],
+	["silent", "res://Music/silent.ogg", "", 185.0, true],
 	["stage 7", "res://Music/stage 7.ogg", "", 185.0, true]
 ]
 

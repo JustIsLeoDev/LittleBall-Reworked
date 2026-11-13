@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/silent.ogg-e2454acbe8593ebe79292dfed3df4976.o
 [params]
 
 loop=false
-loop_offset=0
-bpm=0
+loop_offset=0.0
+bpm=0.0
 beat_count=0
 bar_beats=4
