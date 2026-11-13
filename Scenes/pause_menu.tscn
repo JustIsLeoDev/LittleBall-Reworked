@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://c6qhj8b1bn44x"]
+
+[ext_resource type="Script" uid="uid://jeplwryapp4p" path="res://Scripts/Pausecanvas.gd" id="1_emv3i"]
+[ext_resource type="FontFile" uid="uid://dnvf0w56viu2b" path="res://fonts/MontenegrinGothicOne-Regular.ttf" id="2_k0w1u"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1591368054]
+script = ExtResource("1_emv3i")
+
+[node name="Panel" type="Panel" parent="." unique_id=1443934526]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="." unique_id=510820037]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control" unique_id=2016288765]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.799
+anchor_bottom = 0.709
+offset_left = -67.5
+offset_top = -15.5
+offset_right = 67.5
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Resume" type="Button" parent="Control/HBoxContainer" unique_id=992213770]
+layout_mode = 2
+text = "BUTTONPAUSECANVASRESUME"
+
+[node name="Quit" type="Button" parent="Control/HBoxContainer" unique_id=930170038]
+layout_mode = 2
+text = "BUTTONPAUSECANVASQUIT"
+
+[node name="Control" type="Control" parent="Control" unique_id=1542602823]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control" unique_id=286896751]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.74
+anchor_top = 0.89
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -51.0
+offset_top = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Label2" type="Label" parent="Control/VBoxContainer2" unique_id=1130951473]
+layout_mode = 2
+text = "LABELPAUSECANVASMUSIC"
+
+[node name="Label" type="Label" parent="Control/VBoxContainer2" unique_id=311868429]
+layout_mode = 2
+text = "LABELPAUSECANVASSFX"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=53833950]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -159.0
+offset_top = 383.0
+offset_right = -21.0
+offset_bottom = 676.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Music" type="HSlider" parent="Control/VBoxContainer" unique_id=171175678]
+layout_mode = 2
+value = 50.0
+
+[node name="Sfx" type="HSlider" parent="Control/VBoxContainer" unique_id=910542276]
+layout_mode = 2
+value = 100.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control" unique_id=221654854]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.286
+anchor_top = 0.395
+anchor_right = 0.757
+anchor_bottom = 0.565
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("2_k0w1u")
+theme_override_font_sizes/normal_font_size = 66
+text = "LABELPAUSECANVASPAUSE"
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="." unique_id=1672366501]
+anchors_preset = -1
+anchor_left = 0.91
+anchor_top = 0.762
+anchor_right = 0.971
+anchor_bottom = 0.762
+offset_left = -40.0
+offset_top = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+focus_mode = 0
+selected = 0
+item_count = 2
+popup/item_0/text = "Español"
+popup/item_0/id = 0
+popup/item_1/text = "English"
+popup/item_1/id = 1
+
+[connection signal="pressed" from="Control/HBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="value_changed" from="Control/VBoxContainer/Music" to="." method="_on_music_value_changed"]
+[connection signal="value_changed" from="Control/VBoxContainer/Sfx" to="." method="_on_sfx_value_changed"]
+[connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]

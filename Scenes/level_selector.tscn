@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://bs6yas3t8v25k"]
+
+[ext_resource type="Script" uid="uid://donjc4bgu5j6i" path="res://Scripts/levels/level_selector.gd" id="1_b8t80"]
+[ext_resource type="PackedScene" uid="uid://cixyvynuet7yy" path="res://Scenes/cannon.tscn" id="1_x3xpc"]
+[ext_resource type="PackedScene" uid="uid://b0imh1qcacpqm" path="res://Scenes/Player.tscn" id="2_yk0gq"]
+[ext_resource type="PackedScene" uid="uid://cwkbvax7ad7fg" path="res://Scenes/Camera.tscn" id="3_yk0gq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b8t80"]
+size = Vector2(10595, 322)
+
+[node name="LevelSelector" type="Node2D" unique_id=1482330923]
+script = ExtResource("1_b8t80")
+
+[node name="Camera2D" parent="." unique_id=935593069 node_paths=PackedStringArray("target") instance=ExtResource("3_yk0gq")]
+position = Vector2(-2258, -922)
+zoom = Vector2(0.255, 0.255)
+target = NodePath("../Player")
+mode = 2
+
+[node name="Player" parent="." unique_id=1081606873 instance=ExtResource("2_yk0gq")]
+position = Vector2(-2747, -917)
+
+[node name="Cannon" parent="." unique_id=278113437 node_paths=PackedStringArray("cam") instance=ExtResource("1_x3xpc")]
+position = Vector2(-940, -150)
+launch_direction = Vector2(100, 100)
+directioncam = Vector2(100, 100)
+cam = NodePath("../Camera2D")
+
+[node name="Cannon2" parent="." unique_id=1573227767 node_paths=PackedStringArray("cam") instance=ExtResource("1_x3xpc")]
+position = Vector2(4023, -124)
+launch_direction = Vector2(-0.5, -1)
+launch_speed = 5000.0
+directioncam = Vector2(-1, 0)
+cam = NodePath("../Camera2D")
+target_level = "res://Scenes/lvl_2.tscn"
+
+[node name="Cannon3" parent="." unique_id=2037767204 node_paths=PackedStringArray("cam") instance=ExtResource("1_x3xpc")]
+position = Vector2(1210, -145)
+launch_direction = Vector2(0.5, -1)
+launch_speed = 5000.0
+cam = NodePath("../Camera2D")
+target_level = "res://Scenes/Stage1LVL1.tscn"
+
+[node name="Colision" type="Node2D" parent="." unique_id=810778487]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Colision" unique_id=951851962]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Colision/StaticBody2D" unique_id=952212706]
+position = Vector2(1744, -9)
+shape = SubResource("RectangleShape2D_b8t80")
+
+[node name="Node2D" type="Node2D" parent="." unique_id=1625442674]
+scale = Vector2(4, 4)

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://2lkqquakan03"
+path="res://.godot/imported/Stage 5 reverb.ogg-7e5e09eb26a5d61efa7164d8196c63c8.oggvorbisstr"
+
+[deps]
+
+source_file="res://Music/Stage 5 reverb.ogg"
+dest_files=["res://.godot/imported/Stage 5 reverb.ogg-7e5e09eb26a5d61efa7164d8196c63c8.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=185.0
+beat_count=0
+bar_beats=4

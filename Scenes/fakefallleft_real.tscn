@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://dmkyq77kfvjto"]
+
+[ext_resource type="PackedScene" uid="uid://cblap1o8d62ht" path="res://Scenes/fake_payer.tscn" id="1_oaej2"]
+[ext_resource type="Texture2D" uid="uid://hth00d7ay10w" path="res://Sprites/maxresdefault.jpg" id="2_apaco"]
+[ext_resource type="Script" uid="uid://bn2efilfp1sxb" path="res://Scripts/area2dwarpfake.gd" id="3_r3lgi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f7coc"]
+size = Vector2(4078.109, 279.61658)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtohs"]
+size = Vector2(374.96353, 172.04378)
+
+[node name="FakefallleftREAL" type="Node2D" unique_id=1774153872]
+
+[node name="FakePAYER" parent="." unique_id=1380931142 instance=ExtResource("1_oaej2")]
+position = Vector2(412.00006, -682.00006)
+scale = Vector2(0.6019854, 0.6019854)
+
+[node name="Maxresdefault" type="Sprite2D" parent="." unique_id=1663531379]
+self_modulate = Color(0.5187216, 0, 1, 1)
+position = Vector2(-496.99994, 326)
+scale = Vector2(1.0000001, 1.0000001)
+texture = ExtResource("2_apaco")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=480044629]
+position = Vector2(-553, -820)
+scale = Vector2(0.7591241, 0.7591241)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=209004252]
+position = Vector2(428.12488, 1592.6249)
+rotation = -0.8185594
+scale = Vector2(1.0000001, 1.0000001)
+shape = SubResource("RectangleShape2D_f7coc")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=757812334]
+position = Vector2(0.284729, 0.43798828)
+script = ExtResource("3_r3lgi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=593056276]
+position = Vector2(-679.2847, 663.562)
+scale = Vector2(1.0000001, 1.0000001)
+shape = SubResource("RectangleShape2D_dtohs")
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]

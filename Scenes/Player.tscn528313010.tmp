@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://b0imh1qcacpqm"]
+
+[ext_resource type="Script" uid="uid://d1jk03oxghb15" path="res://Scripts/player.gd" id="1_rpqav"]
+[ext_resource type="AudioStream" uid="uid://djcqba7hm1n50" path="res://sounds/jump sfx.ogg" id="2_kyqiw"]
+[ext_resource type="Texture2D" uid="uid://duwppsgjo1yyv" path="res://Sprites/bola.png" id="3_gntrk"]
+[ext_resource type="Texture2D" uid="uid://cbbwgo3g7j5w3" path="res://Sprites/Purple_Wall.png" id="4_dewec"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4kpcv"]
+radius = 101.0198
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_06ofg"]
+radius = 73.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gntrk"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 128.0
+gravity = Vector3(0, 102.065, 0)
+
+[node name="Player" type="CharacterBody2D" unique_id=1081606873]
+script = ExtResource("1_rpqav")
+gravity = null
+fall_gravity = null
+MAX_SPEED = null
+ACCELERATION = null
+FRICTION = null
+JUMP_VELOCITY = null
+MAX_SLOPE_SPEED = null
+
+[node name="Line2D" type="Line2D" parent="." unique_id=530058478]
+
+[node name="Area2D" type="Area2D" parent="." unique_id=988124655]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=5519126]
+shape = SubResource("CircleShape2D_4kpcv")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2055404379]
+stream = ExtResource("2_kyqiw")
+pitch_scale = 1.28
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=862860345]
+texture = ExtResource("3_gntrk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1092081037]
+shape = SubResource("CircleShape2D_06ofg")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=850400054]
+emitting = false
+amount = 500
+texture = ExtResource("4_dewec")
+process_material = SubResource("ParticleProcessMaterial_gntrk")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1005148216]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=1083211911]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=427477043]
+layout_mode = 2
+text = "asdadsadasdasdads"
+
+[node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=858410781]
+layout_mode = 2
+text = "asdasdadddwdaw"

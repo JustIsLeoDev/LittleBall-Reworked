@@ -1,0 +1,27 @@
+keys,es,en
+BUTTONMENU1PLAY,Jugar,Play
+BUTTONMENU1QUIT,Quitar,Quit
+BUTTONMENU1STATS,Estadisticas,Stats
+LABELMENUVERSION,Versión: ,Version: 
+LABELMENU2MODOMASOQUISTA,Modo masoquista,Masochistic mode
+LABELMENU2MODODEDEBUG,Modo de desarrollador,Developer mode
+LABELMENU2MODOHISTORIA,Modo historia,History mode
+TEXTUPDATERFUTUROPREGUNTA,¿Vienes del futuro?,Are you from the future?
+LABELUPDATERTITULO,Actualización disponible,Update available
+TEXTUPDATERVERSIONDISPONIBLE,Hay una nueva versión de LittleBall disponible.,A new version of LittleBall is available.
+LABELUPDATERVERSIONACTUAL,Versión actual:,Current version:
+LABELUPDATERVERSIONNUEVA,Versión nueva:,New version:
+BUTTONUPDATERACTUALIZAR,Actualizar,Update
+BUTTONUPDATERCANCELAR,Cancelar,Cancel
+BUTTONUPDATERFUTUROSI,Sí,Yes
+TEXTUPDATERFUTURORESPUESTA,"No me importa, estás en una build exclusiva","I don't care, you're on an exclusive build"
+BUTTONUPDATERFUTUROOK,OK,OK
+BUTTONUPDATERFUTUROELAOS,"Maje, ¿a cuánto los helaos de a 100?","Bro, how much are the 100-peso ice creams?"
+ERRORUPDATERNOENCONTRADO,No se encontró updater.exe:,updater.exe not found:
+ERRORUPDATERNOINICIADO,No se pudo iniciar updater.exe.,Could not start updater.exe.
+LABELPAUSECANVASPAUSE,Pausa,Pause
+BUTTONPAUSECANVASRESUME,Reanudar,Resumer
+BUTTONPAUSECANVASQUIT,Quitar,Quit
+LABELPAUSECANVASMUSIC,Musica,Music
+LABELPAUSECANVASSFX,SFX,SFX
+LABELPOINTSMUERTES,Muertes,Trys

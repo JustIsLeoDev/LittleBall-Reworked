@@ -1,0 +1,11 @@
+[gd_resource type="CanvasTexture" format=3 uid="uid://dka643qxhbalh"]
+
+[ext_resource type="Texture2D" uid="uid://ccbqtjcjytnyd" path="res://Sprites/littleball2 - copia.png" id="1_xsavm"]
+[ext_resource type="Texture2D" uid="uid://5ek52u0c8k26" path="res://Sprites/canvas.png" id="2_xsavm"]
+[ext_resource type="Texture2D" uid="uid://cvhpefo26dpgu" path="res://Sprites/littleball2 - copia_specular.png" id="3_jhe1h"]
+
+[resource]
+diffuse_texture = ExtResource("1_xsavm")
+normal_texture = ExtResource("2_xsavm")
+specular_texture = ExtResource("3_jhe1h")
+specular_color = Color(0.54247963, 0.124752045, 1, 1)

@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://bbfm2jguxsto4"]
+
+[ext_resource type="FontFile" uid="uid://boq7cwbo5enuv" path="res://fonts/GeistPixel-Regular-VariableFont_ELSH.ttf" id="1_qna4u"]
+[ext_resource type="Script" uid="uid://cjq1bpivkjowf" path="res://Scripts/points.gd" id="1_u7tib"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=1386258952]
+script = ExtResource("1_u7tib")
+
+[node name="Control" type="Control" parent="." unique_id=1501878904]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control" unique_id=1084584839]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -221.0
+offset_top = 1.0
+offset_right = 112.79544
+offset_bottom = 41.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("1_qna4u")
+theme_override_font_sizes/normal_font_size = 37
+bbcode_enabled = true
+text = "0000000000"
+scroll_active = false
+autowrap_mode = 0
+autowrap_trim_flags = 0
+tab_size = 1
+shortcut_keys_enabled = false
+horizontal_alignment = 1
+
+[node name="Control2" type="Control" parent="." unique_id=1924044164]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control2" unique_id=1072558020]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -175.0
+offset_bottom = 40.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "10:00:00"
+scroll_active = false
+tab_size = 1
+horizontal_alignment = 1
+
+[node name="Control3" type="Control" parent="." unique_id=2109704007]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control3" unique_id=2105255359]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.776
+anchor_top = 0.134
+anchor_right = 0.985
+anchor_bottom = 0.224
+offset_left = -1.0
+grow_horizontal = 0
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2

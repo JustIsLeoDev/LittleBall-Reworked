@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://uvrso25bu2e5"]
+
+[ext_resource type="Script" uid="uid://blyo6enugjbju" path="res://Scripts/fog.gd" id="1_8erv8"]
+[ext_resource type="Shader" uid="uid://c2t3peuijbqrl" path="res://shaders/Fog.gdshader" id="1_vnypv"]
+
+[sub_resource type="Gradient" id="Gradient_ek51e"]
+offsets = PackedFloat32Array(0, 0.21782178, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.8019802, 0.8019802, 0.8019802, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vnypv"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8erv8"]
+noise = SubResource("FastNoiseLite_vnypv")
+color_ramp = SubResource("Gradient_ek51e")
+seamless = true
+normalize = false
+seamless_blend_skirt = 0.038
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i40v6"]
+shader = ExtResource("1_vnypv")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_8erv8")
+shader_parameter/density = 0.08800000418
+shader_parameter/speed = Vector2(0.02, 0.01)
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=1197858572]
+script = ExtResource("1_8erv8")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1737582648]
+self_modulate = Color(0.39837652, 1, 0.35240495, 1)
+material = SubResource("ShaderMaterial_i40v6")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

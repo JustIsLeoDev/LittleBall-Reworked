@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ctxlerlv30l32"]
+
+[ext_resource type="Script" uid="uid://bmqw0xm13aj7i" path="res://Scripts/room_selector_debug.gd" id="1_tp0r8"]
+
+[node name="RoomSelectorMenu" type="CanvasLayer" unique_id=786958334]
+script = ExtResource("1_tp0r8")

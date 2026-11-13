@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cblap1o8d62ht"]
+
+[ext_resource type="Script" uid="uid://dhbppuycy2c1u" path="res://Scripts/fake_payer.gd" id="1_ojo6n"]
+[ext_resource type="Texture2D" uid="uid://ccbqtjcjytnyd" path="res://Sprites/littleball2 - copia.png" id="2_7ub3m"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ng5nm"]
+radius = 71.25307
+
+[node name="RigidBody2D" type="RigidBody2D" unique_id=1380931142]
+script = ExtResource("1_ojo6n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1153080987]
+shape = SubResource("CircleShape2D_ng5nm")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1205530687]
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("2_7ub3m")

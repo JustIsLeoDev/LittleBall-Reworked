@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dhsfiigf4myqu"
+path="res://.godot/imported/cancion jefe final bolita meme canela miedo.ogg-48fa4ccb01d2479f911aaa4faf350dde.oggvorbisstr"
+
+[deps]
+
+source_file="res://Music/cancion jefe final bolita meme canela miedo.ogg"
+dest_files=["res://.godot/imported/cancion jefe final bolita meme canela miedo.ogg-48fa4ccb01d2479f911aaa4faf350dde.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

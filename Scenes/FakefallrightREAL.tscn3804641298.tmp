@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cybwc56gx6wyp"]
+
+[ext_resource type="PackedScene" uid="uid://cblap1o8d62ht" path="res://Scenes/fake_payer.tscn" id="1_m1j7g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4kgx3"]
+size = Vector2(4078.109, 61.285614)
+
+[node name="Node2D" type="Node2D" unique_id=1999972068]
+z_index = 2382
+y_sort_enabled = true
+scale = Vector2(0.685, 0.685)
+
+[node name="FakePAYER" parent="." unique_id=440996310 instance=ExtResource("1_m1j7g")]
+position = Vector2(-128.46715, -756.20435)
+scale = Vector2(0.465, 0.465)
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=713546973]
+position = Vector2(-553.2847, -820.438)
+scale = Vector2(0.7591241, 0.7591241)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=553950108]
+position = Vector2(1226.9232, 1538.4615)
+rotation = 0.8185594
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_4kgx3")

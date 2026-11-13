@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://chwls2bcwnq8e"
+path="res://.godot/imported/pe causa.ogg-0efcb14015259f5823fe475196ff1a56.oggvorbisstr"
+
+[deps]
+
+source_file="res://Music/pe causa.ogg"
+dest_files=["res://.godot/imported/pe causa.ogg-0efcb14015259f5823fe475196ff1a56.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

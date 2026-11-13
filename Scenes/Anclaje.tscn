@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://dgwgt0to6440o"]
+
+[ext_resource type="Script" uid="uid://ceba6lifdcnmv" path="res://Scripts/PuntoAnclaje.gd" id="1_tuq45"]
+[ext_resource type="Texture2D" uid="uid://bvjm2rk8wv2gj" path="res://Sprites/Bola.png" id="2_xlpyp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_06ofg"]
+radius = 149.33519
+
+[node name="GrapplePoint" type="Area2D" unique_id=1874269343]
+script = ExtResource("1_tuq45")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1475122479]
+shape = SubResource("CircleShape2D_06ofg")
+debug_color = Color(0, 0, 0, 0.41960785)
+
+[node name="spritecont2" type="Sprite2D" parent="." unique_id=2122620355]
+self_modulate = Color(1, 0, 0.9576373, 1)
+scale = Vector2(0.575, 0.575)
+texture = ExtResource("2_xlpyp")
+
+[node name="spritecont" type="Sprite2D" parent="." unique_id=570816269]
+visible = false
+self_modulate = Color(0, 1, 0.010106564, 1)
+scale = Vector2(0.575, 0.575)
+texture = ExtResource("2_xlpyp")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=506996045]
+scale = Vector2(0.475, 0.475)
+texture = ExtResource("2_xlpyp")

@@ -1,0 +1,195 @@
+[gd_scene format=3 uid="uid://dwxdk58jgomy4"]
+
+[ext_resource type="Script" uid="uid://cnybygf0vrurw" path="res://Scripts/levels/stage_1lvl_1.gd" id="1_ep2xu"]
+[ext_resource type="Texture2D" uid="uid://dmsmqiqq3anqi" path="res://Sprites/Sin título.jpg" id="1_hnn4c"]
+[ext_resource type="PackedScene" uid="uid://b0imh1qcacpqm" path="res://Scenes/Player.tscn" id="1_x87hy"]
+[ext_resource type="PackedScene" uid="uid://cwkbvax7ad7fg" path="res://Scenes/Camera.tscn" id="2_sxtqu"]
+[ext_resource type="Texture2D" uid="uid://cnyvkh6878cqh" path="res://Sprites/ba830ed3-0597-4e6d-a080-d2cc689fc462.png" id="2_y2ej4"]
+[ext_resource type="Texture2D" uid="uid://bdfmkdtd4bg48" path="res://Sprites/white-brick-wall.jpg" id="3_mholk"]
+[ext_resource type="Script" uid="uid://ohrlpfa1u80k" path="res://Scripts/CameraPoint.gd" id="3_sxtqu"]
+[ext_resource type="PackedScene" uid="uid://g54twu3e0vxr" path="res://Scenes/chowder_node.tscn" id="4_4kpcv"]
+[ext_resource type="Texture2D" uid="uid://cbbwgo3g7j5w3" path="res://Sprites/Purple_Wall.png" id="5_jq6y6"]
+[ext_resource type="PackedScene" uid="uid://bvv1e3sm3vkef" path="res://Scenes/killyou.tscn" id="6_jq6y6"]
+[ext_resource type="PackedScene" uid="uid://benqtk1sjs3y4" path="res://Scenes/audio_player_stereo.tscn" id="7_hnn4c"]
+[ext_resource type="PackedScene" uid="uid://cmgbvqs744kjs" path="res://Scenes/orb.tscn" id="10_12m2h"]
+[ext_resource type="PackedScene" uid="uid://uvrso25bu2e5" path="res://Scenes/FOG.tscn" id="12_s3n4c"]
+[ext_resource type="PackedScene" uid="uid://dgwgt0to6440o" path="res://Scenes/Anclaje.tscn" id="13_h4hy3"]
+[ext_resource type="PackedScene" uid="uid://csqfv10vtcbrc" path="res://Scenes/Puerta.tscn" id="14_m1q2x"]
+
+[sub_resource type="Resource" id="Resource_x87hy"]
+script = ExtResource("3_sxtqu")
+direction = Vector2(0, -5000)
+duration = 30.0
+metadata/_custom_type_script = "uid://ohrlpfa1u80k"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x87hy"]
+size = Vector2(40931.5, 158)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_06ofg"]
+radius = 865.3332
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gw3qe"]
+size = Vector2(2003.3347, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_06ofg"]
+size = Vector2(3420.936, 126.87244)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xrh25"]
+size = Vector2(2844.7627, 348.2378)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hnn4c"]
+size = Vector2(4726.312, 1178.5703)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xrh25"]
+radius = 714.82
+
+[node name="Stage1LVL1" type="Node2D" unique_id=2118219343]
+script = ExtResource("1_ep2xu")
+
+[node name="Node2D" type="Node2D" parent="." unique_id=278102436]
+z_index = -3
+y_sort_enabled = true
+
+[node name="Parallax2D" type="Parallax2D" parent="Node2D" unique_id=1215088646]
+z_index = -2
+scroll_scale = Vector2(0.2, 0.2)
+scroll_offset = Vector2(7687.6445, -5144.717)
+repeat_size = Vector2(4093, 4093)
+
+[node name="Ba830Ed305974e6dA080D2Cc689Fc462" type="Sprite2D" parent="Node2D/Parallax2D" unique_id=1250212306]
+self_modulate = Color(0.9990944, 0.20669031, 1, 1)
+position = Vector2(598.35547, -1988.2832)
+scale = Vector2(3, 3)
+texture = ExtResource("2_y2ej4")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D" unique_id=1149713341]
+visible = false
+scale = Vector2(12, 12)
+texture = ExtResource("1_hnn4c")
+
+[node name="WhiteBrickWall" type="Sprite2D" parent="Node2D" unique_id=1565911520]
+visible = false
+self_modulate = Color(0.31344825, 0.06588115, 0.5294118, 1)
+position = Vector2(853, -1649)
+scale = Vector2(1.9850001, 1.9850001)
+texture = ExtResource("3_mholk")
+
+[node name="Camera2D" parent="." unique_id=935593069 node_paths=PackedStringArray("target") instance=ExtResource("2_sxtqu")]
+position = Vector2(3, 4)
+zoom = Vector2(0.23, 0.23)
+target = NodePath("../Player")
+cinematic_points = Array[ExtResource("3_sxtqu")]([SubResource("Resource_x87hy")])
+mode = 1
+drunk_intensity = 3.0
+drunk_speed = 3.1
+drunk_rotation_degrees = 13.5
+drunk_movement = 23.0
+drunk_window_enabled = true
+drunk_window_movement = 13.0
+drunk_window_speed = 1.3
+
+[node name="ChowderNode" parent="." unique_id=319617952 instance=ExtResource("4_4kpcv")]
+position = Vector2(8, 30)
+pattern_texture = ExtResource("5_jq6y6")
+pattern_scale = 1.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="ChowderNode" unique_id=1528289610]
+position = Vector2(-8, -30)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=45544203]
+position = Vector2(17760.25, 499)
+shape = SubResource("RectangleShape2D_x87hy")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1737923499]
+position = Vector2(1536, 723)
+shape = SubResource("CircleShape2D_06ofg")
+
+[node name="TextureRect" type="TextureRect" parent="ChowderNode/StaticBody2D" unique_id=596592821]
+offset_left = -2708.0
+offset_top = 421.0
+offset_right = 844.5
+offset_bottom = 598.0
+scale = Vector2(2, 2)
+texture = ExtResource("5_jq6y6")
+stretch_mode = 1
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1284228732]
+position = Vector2(5007.3325, 277.19904)
+rotation = -0.17453292
+shape = SubResource("RectangleShape2D_gw3qe")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1691720012]
+position = Vector2(8137.9995, 325.99994)
+rotation = -0.34906584
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_06ofg")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1121991041]
+position = Vector2(11641.001, 365.99976)
+rotation = -0.6981317
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_xrh25")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1188050940]
+position = Vector2(15721.967, -537.2114)
+rotation = -1.0471976
+scale = Vector2(0.9999998, 0.9999998)
+shape = SubResource("RectangleShape2D_hnn4c")
+
+[node name="Killyou" parent="." unique_id=1497591511 node_paths=PackedStringArray("camera") instance=ExtResource("6_jq6y6")]
+position = Vector2(156, 1595)
+scale = Vector2(5.695, 5.695)
+speed = 2.825
+camera = NodePath("../Camera2D")
+mode = 4
+
+[node name="AudioPlayerStereo" parent="." unique_id=96390369 node_paths=PackedStringArray("listener") instance=ExtResource("7_hnn4c")]
+position = Vector2(1, 2)
+listener = NodePath("../Player/AudioListener2D")
+
+[node name="Node2D2" type="Node2D" parent="." unique_id=350001840]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Node2D2" unique_id=1293398660]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D2/StaticBody2D" unique_id=1536535764]
+position = Vector2(3008, -768)
+shape = SubResource("CircleShape2D_xrh25")
+
+[node name="Node2D3" type="Node2D" parent="." unique_id=1877477052]
+
+[node name="Orb" parent="Node2D3" unique_id=425164420 instance=ExtResource("10_12m2h")]
+position = Vector2(1536, -704)
+
+[node name="CanvasLayer" parent="." unique_id=1197858572 instance=ExtResource("12_s3n4c")]
+visible = false
+
+[node name="Marker2D" parent="." unique_id=1471419129 instance=ExtResource("13_h4hy3")]
+position = Vector2(-905, -553)
+
+[node name="Marker2D2" parent="." unique_id=346103192 instance=ExtResource("13_h4hy3")]
+position = Vector2(918, -577)
+
+[node name="Marker2D3" parent="." unique_id=693317843 instance=ExtResource("13_h4hy3")]
+position = Vector2(6819, -258)
+
+[node name="Marker2D4" parent="." unique_id=527432873 instance=ExtResource("13_h4hy3")]
+position = Vector2(10759, -510)
+
+[node name="Marker2D5" parent="." unique_id=449198001 instance=ExtResource("13_h4hy3")]
+position = Vector2(13763, -884)
+
+[node name="Player" parent="." unique_id=1081606873 instance=ExtResource("1_x87hy")]
+trail_type = 1
+trail_style = 1
+trail_spacing = 69.0
+trail_color = Color(1, 0.7694172, 0.8402636, 1)
+dash_scale = Vector2(1.11, 0.935)
+squash_speed = 8.755
+landing_duration = 0.125
+
+[node name="AudioListener2D" type="AudioListener2D" parent="Player" unique_id=1076138049]
+position = Vector2(-0.5915375, -0.7218628)
+current = true
+
+[node name="Node2D4" parent="." unique_id=1832108446 instance=ExtResource("14_m1q2x")]
+position = Vector2(2991, -1726)

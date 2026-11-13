@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://d35fut3vchjla"]
+
+[ext_resource type="Script" uid="uid://c02hewkwd3nx4" path="res://Scripts/deathscreen.gd" id="1_3anfm"]
+[ext_resource type="FontFile" uid="uid://dnvf0w56viu2b" path="res://fonts/MontenegrinGothicOne-Regular.ttf" id="2_nj0ii"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=1097893720]
+visible = false
+script = ExtResource("1_3anfm")
+
+[node name="Control2" type="Control" parent="." unique_id=1547700620]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control2" unique_id=1013601305]
+layout_mode = 0
+offset_left = 213.0
+offset_top = 340.0
+offset_right = 853.0
+offset_bottom = 488.0
+theme_override_fonts/normal_font = ExtResource("2_nj0ii")
+theme_override_font_sizes/normal_font_size = 70
+bbcode_enabled = true
+text = "[color=red]Muerto[/color]
+"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Control2" unique_id=1802811088]
+layout_mode = 0
+offset_left = 248.0
+offset_top = 418.0
+offset_right = 615.45544
+offset_bottom = 458.0
+text = "Pulsa R para reiniciar"
+visible_characters = 1
+visible_ratio = 0.045454547

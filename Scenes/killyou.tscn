@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://bvv1e3sm3vkef"]
+
+[ext_resource type="Script" uid="uid://cormgkate2f5f" path="res://Scripts/killyou.gd" id="1_o1hkc"]
+[ext_resource type="Script" uid="uid://cn3lq665tsym6" path="res://Scripts/Killava.gd" id="2_ktf53"]
+[ext_resource type="Shader" uid="uid://d45p8pq0166o" path="res://shaders/LAVAr.gdshader" id="3_s1h3h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ktf53"]
+size = Vector2(5894, 34.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ktf53"]
+shader = ExtResource("3_s1h3h")
+shader_parameter/origin = Vector2(0, 0)
+shader_parameter/speed = 0.5
+shader_parameter/scale = 4.0
+shader_parameter/surface_height = 0.0710000033725
+shader_parameter/wave_strength = 0.0090000004275
+shader_parameter/wave_frequency = 30.0
+shader_parameter/wave_detail = 0.35
+shader_parameter/noise_scale = 5.0
+shader_parameter/noise_strength = 0.035
+shader_parameter/edge_softness = 0.008
+shader_parameter/lava_color = Color(0.9, 0.08, 0.01, 1)
+shader_parameter/hot_color = Color(1, 0.55, 0.02, 1)
+shader_parameter/dark_color = Color(0.12, 0.008, 0, 1)
+shader_parameter/hot_threshold = 0.65
+shader_parameter/hot_strength = 0.5
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_s1h3h"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_06ofg"]
+noise = SubResource("FastNoiseLite_s1h3h")
+
+[node name="Killyou" type="Node2D" unique_id=1497591511]
+script = ExtResource("1_o1hkc")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=257955691]
+position = Vector2(-0.031520367, -0.028437853)
+script = ExtResource("2_ktf53")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1600529001]
+position = Vector2(1144.0315, -6.2215624)
+shape = SubResource("RectangleShape2D_ktf53")
+
+[node name="TextureRect" type="TextureRect" parent="Area2D" unique_id=1408647763]
+self_modulate = Color(1, 0.6145923, 0.05185443, 1)
+material = SubResource("ShaderMaterial_ktf53")
+offset_left = -1805.9685
+offset_top = -140.97156
+offset_right = 4113.0313
+offset_bottom = 1533.964
+texture = SubResource("NoiseTexture2D_06ofg")

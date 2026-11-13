@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://dwxdk58jgomy4"]
+
+[ext_resource type="PackedScene" uid="uid://b0imh1qcacpqm" path="res://Scenes/Player.tscn" id="1_x87hy"]
+[ext_resource type="PackedScene" uid="uid://cwkbvax7ad7fg" path="res://Scenes/Camera.tscn" id="2_sxtqu"]
+[ext_resource type="Script" uid="uid://ohrlpfa1u80k" path="res://Scripts/CameraPoint.gd" id="3_sxtqu"]
+[ext_resource type="PackedScene" uid="uid://g54twu3e0vxr" path="res://Scenes/chowder_node.tscn" id="4_4kpcv"]
+[ext_resource type="Texture2D" uid="uid://cbbwgo3g7j5w3" path="res://Sprites/Purple_Wall.png" id="5_jq6y6"]
+[ext_resource type="PackedScene" uid="uid://bvv1e3sm3vkef" path="res://Scenes/killyou.tscn" id="6_jq6y6"]
+[ext_resource type="PackedScene" uid="uid://benqtk1sjs3y4" path="res://Scenes/audio_player_stereo.tscn" id="7_hnn4c"]
+
+[sub_resource type="Resource" id="Resource_x87hy"]
+script = ExtResource("3_sxtqu")
+direction = Vector2(0, -5000)
+duration = 30.0
+metadata/_custom_type_script = "uid://ohrlpfa1u80k"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x87hy"]
+size = Vector2(40931.5, 158)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_06ofg"]
+radius = 865.3332
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gw3qe"]
+size = Vector2(2003.3347, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_06ofg"]
+size = Vector2(3420.936, 126.87244)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xrh25"]
+size = Vector2(2844.7627, 348.2378)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hnn4c"]
+size = Vector2(4726.312, 1178.5703)
+
+[node name="Stage1LVL1" type="Node2D" unique_id=2118219343]
+
+[node name="Player" parent="." unique_id=1081606873 instance=ExtResource("1_x87hy")]
+position = Vector2(1, 2)
+gravity = null
+fall_gravity = null
+MAX_SPEED = null
+ACCELERATION = null
+FRICTION = null
+JUMP_VELOCITY = null
+MAX_SLOPE_SPEED = null
+
+[node name="AudioListener2D" type="AudioListener2D" parent="Player" unique_id=1076138049]
+position = Vector2(-0.5915375, -0.7218628)
+current = true
+
+[node name="Camera2D" parent="." unique_id=935593069 node_paths=PackedStringArray("target") instance=ExtResource("2_sxtqu")]
+position = Vector2(3, 4)
+zoom = Vector2(0.23, 0.23)
+target = NodePath("../Player")
+cinematic_points = Array[ExtResource("3_sxtqu")]([SubResource("Resource_x87hy")])
+mode = 1
+
+[node name="ChowderNode" parent="." unique_id=319617952 instance=ExtResource("4_4kpcv")]
+position = Vector2(8, 30)
+pattern_texture = ExtResource("5_jq6y6")
+pattern_scale = 1.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="ChowderNode" unique_id=1528289610]
+position = Vector2(-8, -30)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=45544203]
+position = Vector2(17760.25, 499)
+shape = SubResource("RectangleShape2D_x87hy")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1737923499]
+position = Vector2(1536, 723)
+shape = SubResource("CircleShape2D_06ofg")
+
+[node name="TextureRect" type="TextureRect" parent="ChowderNode/StaticBody2D" unique_id=596592821]
+offset_left = -2708.0
+offset_top = 421.0
+offset_right = 844.5
+offset_bottom = 598.0
+scale = Vector2(2, 2)
+texture = ExtResource("5_jq6y6")
+stretch_mode = 1
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1284228732]
+position = Vector2(5007.3325, 277.19904)
+rotation = -0.17453292
+shape = SubResource("RectangleShape2D_gw3qe")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1691720012]
+position = Vector2(8137.9995, 325.99994)
+rotation = -0.34906584
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_06ofg")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1121991041]
+position = Vector2(11641.001, 365.99976)
+rotation = -0.6981317
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_xrh25")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1188050940]
+position = Vector2(15721.967, -537.2114)
+rotation = -1.0471976
+scale = Vector2(0.9999998, 0.9999998)
+shape = SubResource("RectangleShape2D_hnn4c")
+
+[node name="Killyou" parent="." unique_id=1497591511 node_paths=PackedStringArray("camera") instance=ExtResource("6_jq6y6")]
+position = Vector2(83.99997, 855.99994)
+scale = Vector2(5.695, 5.695)
+speed = 0.0
+camera = NodePath("../Camera2D")
+
+[node name="AudioPlayerStereo" parent="." unique_id=96390369 node_paths=PackedStringArray("listener") instance=ExtResource("7_hnn4c")]
+position = Vector2(1, 2)
+listener = NodePath("../Player/AudioListener2D")

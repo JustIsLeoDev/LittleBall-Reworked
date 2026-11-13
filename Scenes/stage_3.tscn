@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dvdwt1xdsa33j"]
+
+[ext_resource type="PackedScene" uid="uid://b0imh1qcacpqm" path="res://Scenes/Player.tscn" id="1_5sy2q"]
+[ext_resource type="Script" uid="uid://6la2wv37nmel" path="res://Scripts/stage_3.gd" id="1_wt2ih"]
+[ext_resource type="PackedScene" uid="uid://cwkbvax7ad7fg" path="res://Scenes/Camera.tscn" id="2_wt2ih"]
+[ext_resource type="PackedScene" uid="uid://g54twu3e0vxr" path="res://Scenes/chowder_node.tscn" id="3_hbpxv"]
+[ext_resource type="PackedScene" uid="uid://bvv1e3sm3vkef" path="res://Scenes/killyou.tscn" id="4_brndx"]
+[ext_resource type="PackedScene" uid="uid://csqfv10vtcbrc" path="res://Scenes/Puerta.tscn" id="5_wlb4h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ohfg2"]
+size = Vector2(1840, 32.132935)
+
+[node name="Stage3" type="Node2D" unique_id=582225431]
+script = ExtResource("1_wt2ih")
+
+[node name="Player" parent="." unique_id=1081606873 instance=ExtResource("1_5sy2q")]
+position = Vector2(-1, -1)
+
+[node name="Camera2D" parent="." unique_id=935593069 node_paths=PackedStringArray("target") instance=ExtResource("2_wt2ih")]
+position = Vector2(-1, -2)
+zoom = Vector2(0.14, 0.14)
+target = NodePath("../Player")
+mode = 1
+
+[node name="ChowderNode" parent="." unique_id=319617952 instance=ExtResource("3_hbpxv")]
+position = Vector2(-1, -4)
+
+[node name="Killyou" parent="." unique_id=1497591511 node_paths=PackedStringArray("camera") instance=ExtResource("4_brndx")]
+position = Vector2(-4.000004, 1575)
+scale = Vector2(5.825, 5.825)
+speed = 0.0
+camera = NodePath("../Camera2D")
+
+[node name="Node2D" parent="." unique_id=1915344619 instance=ExtResource("5_wlb4h")]
+position = Vector2(299, -8124)
+
+[node name="COL" type="Node2D" parent="." unique_id=1059114862]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="COL" unique_id=1511651953]
+
+[node name="Col1" type="CollisionShape2D" parent="COL/StaticBody2D" unique_id=2002494016]
+position = Vector2(-155, 242.93353)
+shape = SubResource("RectangleShape2D_ohfg2")

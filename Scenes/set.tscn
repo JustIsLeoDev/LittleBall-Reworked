@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://cg1l2q07aicja"]
+
+[ext_resource type="Script" uid="uid://cl076nlust4tp" path="res://Scripts/set.gd" id="1_c7ffj"]
+[ext_resource type="Script" uid="uid://jo6y42k41pih" path="res://Scripts/volumen.gd" id="2_hl1d6"]
+
+[node name="Set" type="Node2D" unique_id=513610166]
+process_mode = 3
+script = ExtResource("1_c7ffj")
+filter_time = null
+audit_interval = 5.14
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1914625973]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1807867508]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_hl1d6")
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Control" unique_id=1812001762]
+visible = false
+layout_mode = 0
+offset_left = 17.0
+offset_top = 131.0
+offset_right = 70.0
+offset_bottom = 367.0
+fill_mode = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/Control" unique_id=1552771051]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 55.0
+offset_right = 43.0
+offset_bottom = 78.0
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control" unique_id=2025543909]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 119.0
+offset_right = 42.0
+offset_bottom = 142.0

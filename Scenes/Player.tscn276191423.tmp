@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://b0imh1qcacpqm"]
+
+[ext_resource type="Script" uid="uid://d1jk03oxghb15" path="res://Scripts/player.gd" id="1_rpqav"]
+[ext_resource type="AudioStream" uid="uid://djcqba7hm1n50" path="res://sounds/jump sfx.ogg" id="2_kyqiw"]
+[ext_resource type="Texture2D" uid="uid://ccbqtjcjytnyd" path="res://Sprites/littleball2 - copia.png" id="4_5ixxa"]
+[ext_resource type="Texture2D" uid="uid://cbbwgo3g7j5w3" path="res://Sprites/Purple_Wall.png" id="4_dewec"]
+[ext_resource type="AudioStream" uid="uid://dv354p7kfxqd7" path="res://sounds/dash.ogg" id="5_5ixxa"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4kpcv"]
+radius = 101.0198
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_06ofg"]
+radius = 73.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gntrk"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 128.0
+gravity = Vector3(0, 102.065, 0)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dewec"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 70.99
+angle_min = 1.0728835e-05
+angle_max = 10.0000105
+gravity = Vector3(0, 98, 0)
+linear_accel_min = -2.2351742e-06
+linear_accel_max = -2.2351742e-06
+radial_accel_min = 7.1399975
+radial_accel_max = 7.1399975
+turbulence_enabled = true
+
+[node name="Player" type="CharacterBody2D" unique_id=1081606873]
+script = ExtResource("1_rpqav")
+
+[node name="Line2D" type="Line2D" parent="." unique_id=530058478]
+z_index = -1
+y_sort_enabled = true
+
+[node name="Area2D" type="Area2D" parent="." unique_id=988124655]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=5519126]
+shape = SubResource("CircleShape2D_4kpcv")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2055404379]
+stream = ExtResource("2_kyqiw")
+pitch_scale = 1.28
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1092081037]
+shape = SubResource("CircleShape2D_06ofg")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=850400054]
+emitting = false
+amount = 500
+texture = ExtResource("4_dewec")
+process_material = SubResource("ParticleProcessMaterial_gntrk")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1005148216]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=1083211911]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=427477043]
+layout_mode = 2
+text = "asdadsadasdasdads"
+
+[node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=858410781]
+layout_mode = 2
+text = "asdasdadddwdaw"
+
+[node name="SpritePivot" type="Node2D" parent="." unique_id=1657608390]
+
+[node name="Sprite2D" type="Sprite2D" parent="SpritePivot" unique_id=862860345]
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("4_5ixxa")
+
+[node name="Node2D2" type="Node2D" parent="." unique_id=1603240148]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Node2D2" unique_id=1923588288]
+position = Vector2(4, 32)
+amount = 50
+texture = ExtResource("4_dewec")
+lifetime = 1.78
+fixed_fps = 120
+process_material = SubResource("ParticleProcessMaterial_dewec")
+
+[node name="Nick" type="Label" parent="." unique_id=1900395818]
+offset_left = -484.0
+offset_top = -214.0
+offset_right = -243.0
+offset_bottom = -191.0
+scale = Vector2(4, 4)
+text = "JustIsLeo"
+horizontal_alignment = 1
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="." unique_id=975760355]
+stream = ExtResource("5_5ixxa")
+pitch_scale = 1.47

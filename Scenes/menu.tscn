@@ -1,0 +1,181 @@
+[gd_scene format=3 uid="uid://cfqtahe3rh1o0"]
+
+[ext_resource type="Shader" uid="uid://b2eg1g6knojr0" path="res://shaders/Lava.gdshader" id="1_1rerr"]
+[ext_resource type="Script" uid="uid://br0n5s12mnssw" path="res://Scripts/menu.gd" id="1_wwsa2"]
+[ext_resource type="FontFile" uid="uid://dnvf0w56viu2b" path="res://fonts/MontenegrinGothicOne-Regular.ttf" id="2_cayip"]
+[ext_resource type="PackedScene" uid="uid://ca017i5b1po5a" path="res://Scenes/sky.tscn" id="2_jsrd8"]
+[ext_resource type="PackedScene" uid="uid://dn4tajj1ampmx" path="res://Scenes/Updater.tscn" id="2_wwsa2"]
+[ext_resource type="Texture2D" uid="uid://bvw2uaf507mri" path="res://Sprites/littleball2.png" id="3_158mb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u4yt8"]
+shader = ExtResource("1_1rerr")
+shader_parameter/color1 = Color(0.9652454, 0.08209127, 1, 1)
+shader_parameter/color2 = Color(1, 0.6828623, 0, 1)
+shader_parameter/speed = 0.5
+shader_parameter/scale = 4.0
+shader_parameter/threshold = 0.2
+
+[sub_resource type="Theme" id="Theme_1rerr"]
+default_font = ExtResource("2_cayip")
+default_font_size = 65
+
+[node name="Menu" type="CanvasLayer" unique_id=1401566200]
+script = ExtResource("1_wwsa2")
+
+[node name="ColorRect3" type="ColorRect" parent="." unique_id=1484938338]
+visible = false
+material = SubResource("ShaderMaterial_u4yt8")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Control3" parent="." unique_id=296626289 instance=ExtResource("2_wwsa2")]
+mouse_filter = 2
+
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=745633037]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.59589815, 0, 1)
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1916590511]
+visible = false
+material = SubResource("ShaderMaterial_u4yt8")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Control2" type="Control" parent="." unique_id=936197475]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Control4" parent="Control2" unique_id=1702671043 instance=ExtResource("2_jsrd8")]
+layout_mode = 1
+offset_left = -2.0
+offset_top = -3.0
+offset_right = -2.0
+offset_bottom = -3.0
+mouse_filter = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control2" unique_id=894928082]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.889
+anchor_right = 0.5
+anchor_bottom = 0.89
+offset_left = -55.5
+offset_top = -31.0
+offset_right = 55.5
+grow_horizontal = 2
+grow_vertical = 0
+mouse_default_cursor_shape = 2
+alignment = 1
+
+[node name="Play" type="Button" parent="Control2/HBoxContainer" unique_id=1782273940]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "BUTTONMENU1PLAY"
+
+[node name="Quit" type="Button" parent="Control2/HBoxContainer" unique_id=1581079542]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "BUTTONMENU1QUIT"
+
+[node name="Estadisticas" type="Button" parent="Control2/HBoxContainer" unique_id=1689002223]
+layout_mode = 2
+text = "BUTTONMENU1STATS"
+
+[node name="OptionButton" type="OptionButton" parent="Control2" unique_id=797273715]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.91
+anchor_top = 0.762
+anchor_right = 0.971
+anchor_bottom = 0.762
+offset_left = -40.0
+offset_top = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+focus_mode = 0
+selected = 0
+item_count = 2
+popup/item_0/text = "Español"
+popup/item_0/id = 0
+popup/item_1/text = "English"
+popup/item_1/id = 1
+
+[node name="Control" type="Control" parent="." unique_id=1719838315]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control" unique_id=478149175]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.254
+anchor_top = 0.477
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -122.0
+offset_bottom = -186.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 1.0233506)
+mouse_filter = 2
+theme = SubResource("Theme_1rerr")
+bbcode_enabled = true
+text = "[color=#808080]Little[/color][color=#A020F0]Ball[/color]"
+scroll_active = false
+
+[node name="Control" type="Control" parent="Control" unique_id=1667678317]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Littleball2" type="Sprite2D" parent="Control/Control" unique_id=1085161678]
+position = Vector2(19.00003, -67.99997)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("3_158mb")
+
+[node name="Label" type="Label" parent="Control" unique_id=89041486]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 421.0
+offset_right = 62.0
+offset_bottom = 444.0
+text = "LABELMENUVERSION"
+
+[connection signal="pressed" from="Control2/HBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Control2/HBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Control2/HBoxContainer/Estadisticas" to="." method="_on_estadisticas_pressed"]
+[connection signal="item_selected" from="Control2/OptionButton" to="." method="_on_option_button_item_selected"]

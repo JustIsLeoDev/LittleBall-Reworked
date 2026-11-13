@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://g54twu3e0vxr"]
+
+[ext_resource type="Script" uid="uid://w6ux61hesy5b" path="res://Scripts/chowder_node.gd" id="1_ki2jp"]
+
+[node name="ChowderNode" type="Node2D" unique_id=319617952]
+script = ExtResource("1_ki2jp")

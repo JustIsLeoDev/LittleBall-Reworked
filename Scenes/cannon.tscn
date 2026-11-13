@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://cixyvynuet7yy"]
+
+[ext_resource type="Script" uid="uid://bm82khs7y658d" path="res://Scripts/cannon.gd" id="1_qayxd"]
+[ext_resource type="Texture2D" uid="uid://cvo2sg1yu3pr6" path="res://Sprites/canonpart1.png" id="2_qlvt6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4c0tx"]
+size = Vector2(562, 472.98853)
+
+[sub_resource type="LabelSettings" id="LabelSettings_06ofg"]
+font_size = 151
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qayxd"]
+size = Vector2(101.189156, 348.60742)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qlvt6"]
+size = Vector2(753, 108.98563)
+
+[node name="Cannon" type="Area2D" unique_id=278113437]
+script = ExtResource("1_qayxd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1495639080]
+position = Vector2(1.09552, -1.4949646)
+shape = SubResource("RectangleShape2D_4c0tx")
+
+[node name="Label" type="Label" parent="." unique_id=1587760343]
+offset_left = -236.0
+offset_top = -800.0
+offset_right = 64.0
+offset_bottom = -383.0
+text = "5.00
+"
+label_settings = SubResource("LabelSettings_06ofg")
+
+[node name="Node2D" type="Node2D" parent="." unique_id=331081735]
+
+[node name="Canonpart1" type="Sprite2D" parent="Node2D" unique_id=538513213]
+position = Vector2(-26, -327)
+scale = Vector2(1.86, 1.86)
+texture = ExtResource("2_qlvt6")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Node2D" unique_id=1455801624]
+position = Vector2(-188, -505)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D" unique_id=59112208]
+position = Vector2(-77, 272)
+shape = SubResource("RectangleShape2D_qayxd")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Node2D/StaticBody2D" unique_id=1421768381]
+position = Vector2(430, 279.3037)
+shape = SubResource("RectangleShape2D_qayxd")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Node2D/StaticBody2D" unique_id=912537474]
+position = Vector2(187, 509)
+shape = SubResource("RectangleShape2D_qlvt6")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

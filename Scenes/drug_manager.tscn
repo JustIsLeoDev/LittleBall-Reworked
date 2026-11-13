@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bfxhyt8xtt8nx"]
+
+[ext_resource type="Script" uid="uid://d0ido5gmtjgrr" path="res://Scripts/drug_manager.gd" id="1_jleii"]
+
+[node name="DrugManager" type="Node2D" unique_id=1460204129]
+script = ExtResource("1_jleii")

@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://dpjnudw8e8vmg"]
+
+[ext_resource type="Script" uid="uid://dun4yvc5tnglg" path="res://Scripts/lvl_2.gd" id="1_me6yq"]
+[ext_resource type="PackedScene" uid="uid://cwkbvax7ad7fg" path="res://Scenes/Camera.tscn" id="2_4gpqu"]
+[ext_resource type="PackedScene" uid="uid://b0imh1qcacpqm" path="res://Scenes/Player.tscn" id="3_47ln3"]
+[ext_resource type="PackedScene" uid="uid://bvv1e3sm3vkef" path="res://Scenes/killyou.tscn" id="4_wokn7"]
+[ext_resource type="PackedScene" uid="uid://g54twu3e0vxr" path="res://Scenes/chowder_node.tscn" id="5_e2npw"]
+[ext_resource type="Texture2D" uid="uid://bpiq8smst8cxs" path="res://Sprites/wallUT.png" id="6_e2npw"]
+[ext_resource type="PackedScene" uid="uid://dgwgt0to6440o" path="res://Scenes/Anclaje.tscn" id="7_k7lr0"]
+[ext_resource type="PackedScene" uid="uid://cmgbvqs744kjs" path="res://Scenes/orb.tscn" id="8_jlg5g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k7lr0"]
+size = Vector2(1769, 42)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xyqoj"]
+size = Vector2(2827.401, 145.40527)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jlg5g"]
+size = Vector2(4308.6265, 118.50815)
+
+[node name="LVL2" type="Node2D" unique_id=1083825371]
+script = ExtResource("1_me6yq")
+
+[node name="Camera2D" parent="." unique_id=935593069 node_paths=PackedStringArray("target") instance=ExtResource("2_4gpqu")]
+zoom = Vector2(0.18, 0.18)
+target = NodePath("../Player")
+mode = 1
+
+[node name="Player" parent="." unique_id=1081606873 instance=ExtResource("3_47ln3")]
+
+[node name="Killyou" parent="." unique_id=1497591511 node_paths=PackedStringArray("camera") instance=ExtResource("4_wokn7")]
+position = Vector2(-37, 1152)
+scale = Vector2(5.825, 5.825)
+speed = 5.855
+camera = NodePath("../Camera2D")
+
+[node name="ChowderNode" parent="." unique_id=319617952 instance=ExtResource("5_e2npw")]
+pattern_texture = ExtResource("6_e2npw")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="ChowderNode" unique_id=582973476]
+
+[node name="COL1" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1894472553]
+position = Vector2(-78, 316)
+shape = SubResource("RectangleShape2D_k7lr0")
+
+[node name="COL2" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1425571299]
+position = Vector2(3447.5, -643)
+shape = SubResource("RectangleShape2D_k7lr0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1238916591]
+position = Vector2(1067.7004, -2194)
+shape = SubResource("RectangleShape2D_xyqoj")
+
+[node name="COL3" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=752451752]
+position = Vector2(-3634, -3400)
+shape = SubResource("RectangleShape2D_k7lr0")
+
+[node name="COL4" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1629677108]
+position = Vector2(-1485, -2926)
+shape = SubResource("RectangleShape2D_k7lr0")
+
+[node name="COL5" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1151176282]
+position = Vector2(1096, -4412)
+shape = SubResource("RectangleShape2D_k7lr0")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=1737654590]
+position = Vector2(3213.465, -5519.8804)
+rotation = 2.4801128
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_jlg5g")
+
+[node name="COL6" type="CollisionShape2D" parent="ChowderNode/StaticBody2D" unique_id=727947501]
+position = Vector2(757, -7978)
+shape = SubResource("RectangleShape2D_k7lr0")
+
+[node name="Orb" parent="ChowderNode/StaticBody2D" unique_id=425164420 instance=ExtResource("8_jlg5g")]
+position = Vector2(3289, -7534)
+
+[node name="Marker2D" parent="." unique_id=784280885 instance=ExtResource("7_k7lr0")]
+position = Vector2(1294, -931)
+
+[node name="Marker2D2" parent="." unique_id=1471419129 instance=ExtResource("7_k7lr0")]
+position = Vector2(-1601, -4511)
+
+[node name="Orb" parent="." unique_id=169628392 instance=ExtResource("8_jlg5g")]
+position = Vector2(3516, -1496)

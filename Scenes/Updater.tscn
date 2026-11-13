@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://dn4tajj1ampmx"]
+
+[ext_resource type="Script" uid="uid://skhd7xutudw1" path="res://Scripts/updater.gd" id="1_yccpr"]
+
+[node name="Control" type="Control" unique_id=296626289]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yccpr")
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="." unique_id=1859183297]
+oversampling_override = 1.0
+mode = 3
+title = "Actualización disponible"
+initial_position = 1
+size = Vector2i(377, 100)
+ok_button_text = "Actualizar"
+dialog_text = "Hay una nueva versión de LittleBall disponible."
+dialog_close_on_escape = false
+cancel_button_text = "Más tarde"
+
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=2132495032]
+
+[connection signal="canceled" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_canceled"]
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_confirmed"]

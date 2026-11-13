@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://c8hrjt06egcuo"]
+
+[ext_resource type="Script" uid="uid://b2x1w8q7gv2yq" path="res://Scripts/level_presentation.gd" id="1_t77k1"]
+[ext_resource type="FontFile" uid="uid://4qmg6ak4m0ke" path="res://fonts/YuyuShort-Regular.ttf" id="2_i1a3f"]
+
+[node name="LevelPresentation" type="CanvasLayer" unique_id=1977765079]
+script = ExtResource("1_t77k1")
+
+[node name="Control" type="Control" parent="." unique_id=821806474]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control" unique_id=1156790030]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.284
+anchor_top = 0.657
+anchor_right = 0.448
+anchor_bottom = 0.657
+offset_right = 297.28
+offset_bottom = 91.639984
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("2_i1a3f")
+theme_override_font_sizes/normal_font_size = 53
+bbcode_enabled = true
+text = "LEVEL"
+scroll_active = false
+autowrap_trim_flags = 0
+tab_size = 1
+shortcut_keys_enabled = false

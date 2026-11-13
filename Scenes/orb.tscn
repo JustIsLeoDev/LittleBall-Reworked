@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cmgbvqs744kjs"]
+
+[ext_resource type="Texture2D" uid="uid://bvjm2rk8wv2gj" path="res://Sprites/Bola.png" id="1_ryljl"]
+[ext_resource type="Script" uid="uid://8ovy5ap4hjjf" path="res://Scripts/ORB1.gd" id="2_4tb7o"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_06ofg"]
+radius = 182.0
+
+[node name="Orb" type="Node2D" unique_id=425164420]
+
+[node name="Bola" type="Sprite2D" parent="." unique_id=1935764672]
+self_modulate = Color(0, 0.74985147, 1, 1)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("1_ryljl")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1177883932]
+script = ExtResource("2_4tb7o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1287953961]
+shape = SubResource("CircleShape2D_06ofg")
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]
