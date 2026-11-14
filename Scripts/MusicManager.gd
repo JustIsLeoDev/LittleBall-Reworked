@@ -6,6 +6,8 @@ extends Node
 @onready var Album_texture: TextureRect = $CanvasLayer/Control/TextureRect
 @onready var RichText: RichTextLabel = $CanvasLayer/Control/RichTextLabel
 
+var settings: ConfigFile = ConfigFile.new()
+
 var canciones: Array[AudioStream] = []
 var nombres_canciones: Array[String] = []
 var rutas_canciones: Array[String] = []
@@ -64,6 +66,15 @@ var album_rotando: bool = false
 var album_actual: String = ""
 var bpm_actual: float = 120.0
 
+# Datos que conservamos para recuperar el álbum al quitar el mute.
+var ultimo_titulo: String = ""
+var ultimo_album_path: String = ""
+var ultimo_album_rotable: bool = true
+var album_configurado: bool = false
+
+# Evita ejecutar la transición repetidamente.
+var musica_silenciada: bool = false
+
 var texto_id: int = 0
 var texto_actual: String = ""
 
@@ -76,14 +87,16 @@ func _ready() -> void:
 	_cargar_musica()
 	_comprobar_grupos()
 
+	musica_silenciada = PauseMenu.is_music_muted()
+
 	for player: AudioStreamPlayer in [music_player_1, music_player_2]:
 		player.bus = "Music"
 		player.volume_db = VOLUMEN_SILENCIO_DB
 		player.stop()
 
-	# Detectar cuando termina naturalmente cada canción.
 	if not music_player_1.finished.is_connected(_on_player_1_finished):
 		music_player_1.finished.connect(_on_player_1_finished)
+
 	if not music_player_2.finished.is_connected(_on_player_2_finished):
 		music_player_2.finished.connect(_on_player_2_finished)
 
@@ -91,15 +104,51 @@ func _ready() -> void:
 
 	player_actual = music_player_1
 	player_siguiente = music_player_2
+
 	PM.info_print("REPRODUCTORES: Inicial actual=" + player_actual.name + " | siguiente=" + player_siguiente.name)
 
 	try_play_music_por_ruta("res://Music/s1222.ogg")
 
 
 func _process(delta: float) -> void:
+	# Rotación del álbum.
 	if album_rotando and bpm_actual > 0.0 and bpm_referencia > 0.0:
 		var velocidad_actual: float = velocidad_rotacion * (bpm_actual / bpm_referencia)
 		Album_texture.rotation += velocidad_actual * delta
+
+	# Comprobar el estado del volumen.
+	var silenciada: bool = PauseMenu.is_music_muted()
+
+	# No hacer nada si el estado no ha cambiado.
+	if silenciada == musica_silenciada:
+		return
+
+	musica_silenciada = silenciada
+
+	if silenciada:
+		PM.info_print("MÚSICA: Silenciada. Ocultando álbum.")
+
+		_ocultar_texto()
+
+		if album_en_pantalla and not album_saliendo:
+			album_salir()
+
+	else:
+		PM.info_print("MÚSICA: Volumen restaurado.")
+
+		# Solo recuperar el álbum si todavía hay música reproduciéndose.
+		if _hay_musica_reproduciendose() and album_configurado:
+			PM.satisfactory_print("ÁLBUM: Recuperando álbum anterior.")
+
+			album_entrar(
+				ultimo_album_path,
+				ultimo_album_rotable,
+				ultimo_titulo
+			)
+
+
+func _hay_musica_reproduciendose() -> bool:
+	return music_player_1.playing or music_player_2.playing
 
 
 func _configurar_album() -> void:
@@ -230,7 +279,6 @@ func play_music(
 	PM.info_print("REPRODUCCIÓN: Solicitud: " + nueva_cancion.resource_path)
 	PM.info_print("REPRODUCCIÓN: Álbum='" + album_path + "' | Título='" + song_title + "'")
 
-	# Mantener player_actual apuntando al reproductor que está sonando.
 	if not player_actual.playing and player_siguiente.playing:
 		PM.info_print("REPRODUCCIÓN: Corrigiendo referencias de reproductores.")
 		_intercambiar_reproductores()
@@ -246,9 +294,12 @@ func play_music(
 
 	if player_actual.playing:
 		var tiempo_actual: float = player_actual.get_playback_position()
+
 		PM.info_print("CROSSFADE: " + player_actual.name + " -> " + player_siguiente.name)
 		PM.info_print("CROSSFADE: Nuevo stream=" + nueva_cancion.resource_path + " | posición=" + str(tiempo_actual))
+
 		player_siguiente.play(tiempo_actual)
+
 		PM.satisfactory_print("CROSSFADE: " + player_siguiente.name + " inició. Playing=" + str(player_siguiente.playing))
 
 		tween_fade.tween_property(
@@ -272,13 +323,17 @@ func play_music(
 			if cambiar_album:
 				album_entrar(album_path, rotable, song_title)
 			else:
+				ultimo_titulo = song_title
+				ultimo_album_rotable = rotable
 				album_rotando = rotable and bpm_actual > 0.0
 				_mostrar_texto(song_title)
 		)
+
 	else:
 		player_actual.stream = nueva_cancion
 		player_actual.volume_db = VOLUMEN_SILENCIO_DB
 		player_actual.play()
+
 		PM.satisfactory_print("REPRODUCCIÓN: " + player_actual.name + " inició " + nueva_cancion.resource_path + ". Playing=" + str(player_actual.playing))
 
 		tween_fade.tween_property(
@@ -291,6 +346,8 @@ func play_music(
 		if cambiar_album or album_actual == "":
 			album_entrar(album_path, rotable, song_title)
 		else:
+			ultimo_titulo = song_title
+			ultimo_album_rotable = rotable
 			album_rotando = rotable and bpm_actual > 0.0
 			_mostrar_texto(song_title)
 
@@ -334,6 +391,28 @@ func try_play_music_por_ruta(ruta: String, desde_player: bool = false) -> void:
 
 
 func album_entrar(album_path: String, rotable: bool, song_title: String) -> void:
+	# Guardar siempre los datos del último álbum.
+	ultimo_album_path = album_path
+	ultimo_album_rotable = rotable
+	ultimo_titulo = song_title
+	album_configurado = true
+
+	album_actual = album_path
+
+	# Si está muteado, conservar los datos pero no mostrar el álbum.
+	if PauseMenu.is_music_muted():
+		album_saliendo = false
+		album_en_pantalla = false
+		album_rotando = false
+
+		if album_tween and album_tween.is_running():
+			album_tween.kill()
+
+		Album_texture.offset_top = album_offset_top + distancia_icono
+		Album_texture.offset_bottom = album_offset_bottom + distancia_icono
+
+		return
+
 	# Cancelar una posible animación de salida.
 	album_saliendo = false
 
@@ -346,9 +425,10 @@ func album_entrar(album_path: String, rotable: bool, song_title: String) -> void
 		if nueva_textura != null:
 			Album_texture.texture = nueva_textura
 
-	album_actual = album_path
 	album_en_pantalla = true
+
 	PM.satisfactory_print("ÁLBUM: Entrada iniciada. Ruta='" + album_path + "'")
+
 	album_rotando = false
 	Album_texture.rotation = 0.0
 
@@ -383,13 +463,13 @@ func album_salir() -> void:
 		return
 
 	PM.satisfactory_print("ÁLBUM: Iniciando animación de frenazo.")
+
 	album_saliendo = true
 	album_rotando = false
 
 	if album_tween and album_tween.is_running():
 		album_tween.kill()
 
-	# Conservar el ángulo actual sin saltos.
 	var rotacion_inicial: float = wrapf(
 		Album_texture.rotation,
 		-PI,
@@ -398,7 +478,6 @@ func album_salir() -> void:
 
 	Album_texture.rotation = rotacion_inicial
 
-	# Determinar el sentido original de giro.
 	var sentido_giro: float = signf(velocidad_rotacion * bpm_actual)
 
 	if is_zero_approx(sentido_giro):
@@ -406,7 +485,7 @@ func album_salir() -> void:
 
 	album_tween = create_tween()
 
-	# 1. Frenazo: sacudida de hasta 15°.
+	# 1. Frenazo.
 	album_tween.tween_method(
 		Callable(self, "_animar_frenazo").bind(
 			rotacion_inicial,
@@ -417,7 +496,7 @@ func album_salir() -> void:
 		tiempo_frenazo
 	).set_trans(Tween.TRANS_LINEAR)
 
-	# 2. Impulso de 50° en el sentido original, con vibración.
+	# 2. Impulso.
 	var rotacion_impulso: float = (
 		rotacion_inicial
 		+ sentido_giro * deg_to_rad(angulo_impulso)
@@ -434,8 +513,7 @@ func album_salir() -> void:
 		tiempo_impulso
 	).set_trans(Tween.TRANS_LINEAR)
 
-	# 3. Regresar al cero en sentido contrario.
-	# La transición empieza rápida y frena al acercarse a 0°.
+	# 3. Regreso.
 	album_tween.tween_property(
 		Album_texture,
 		"rotation",
@@ -443,7 +521,7 @@ func album_salir() -> void:
 		tiempo_regreso
 	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
-	# 4. Pequeña vibración de estabilización.
+	# 4. Estabilización.
 	album_tween.tween_method(
 		Callable(self, "_animar_estabilizacion").bind(
 			deg_to_rad(angulo_estabilizacion)
@@ -472,13 +550,15 @@ func album_salir() -> void:
 	album_tween.tween_callback(func() -> void:
 		album_saliendo = false
 		album_en_pantalla = false
-		album_actual = ""
+
+		# IMPORTANTE:
+		# No borrar album_actual ni los datos guardados.
+		# Se necesitan para recuperar el álbum al quitar el mute.
 
 		PM.satisfactory_print("ÁLBUM: Icono escondido. Salida completada.")
 	)
 
 
-# Sacudida causada por el frenazo.
 func _animar_frenazo(
 	tiempo: float,
 	base: float,
@@ -490,7 +570,6 @@ func _animar_frenazo(
 		progreso * TAU * ciclos_frenazo
 	)
 
-	# La sacudida pierde fuerza progresivamente.
 	var amortiguacion: float = 1.0 - progreso
 
 	Album_texture.rotation = (
@@ -498,7 +577,6 @@ func _animar_frenazo(
 	)
 
 
-# Impulso hacia el sentido original con vibración.
 func _animar_impulso(
 	tiempo: float,
 	inicio: float,
@@ -513,7 +591,6 @@ func _animar_impulso(
 		progreso
 	)
 
-	# Vibración que aparece y desaparece durante el impulso.
 	var temblor: float = (
 		sin(tiempo * TAU * frecuencia_temblor)
 		* amplitud
@@ -523,7 +600,6 @@ func _animar_impulso(
 	Album_texture.rotation = rotacion_base + temblor
 
 
-# Pequeño temblor al llegar a 0°.
 func _animar_estabilizacion(
 	tiempo: float,
 	amplitud: float
@@ -545,6 +621,7 @@ func _animar_estabilizacion(
 
 func _ocultar_texto() -> void:
 	PM.satisfactory_print("TEXTO: Iniciando desaparición del título: " + texto_actual)
+
 	texto_id += 1
 	var id_actual: int = texto_id
 
@@ -556,6 +633,7 @@ func _ocultar_texto() -> void:
 		return
 
 	texto_tween = create_tween()
+
 	RichText.text = "[fadeout]" + texto_actual + "[/fadeout]"
 	RichText.visible_characters = -1
 
@@ -582,6 +660,7 @@ func _mostrar_texto(titulo: String) -> void:
 		texto_tween.kill()
 
 	texto_actual = titulo
+
 	RichText.text = "[fadein]" + titulo + "[/fadein]"
 	RichText.visible_characters = -1
 
@@ -589,6 +668,7 @@ func _mostrar_texto(titulo: String) -> void:
 	var duracion: float = float(cantidad) * texto_retraso + (1.0 / texto_velocidad)
 
 	texto_tween = create_tween()
+
 	texto_tween.tween_interval(duracion)
 	texto_tween.tween_interval(texto_duracion)
 
@@ -640,11 +720,13 @@ func _intercambiar_reproductores() -> void:
 	var temp: AudioStreamPlayer = player_actual
 	player_actual = player_siguiente
 	player_siguiente = temp
+
 	PM.info_print("REPRODUCTORES: Actual=" + player_actual.name + " | Siguiente=" + player_siguiente.name)
 
 
 func _comprobar_salir_album() -> void:
 	PM.info_print("MÚSICA: Comprobando final de reproducción.")
+
 	_debug_reproductor(music_player_1)
 	_debug_reproductor(music_player_2)
 
@@ -661,6 +743,7 @@ func _comprobar_salir_album() -> void:
 		return
 
 	PM.satisfactory_print("MÚSICA: Ambos reproductores están detenidos. Cerrando álbum.")
+
 	_ocultar_texto()
 	album_salir()
 

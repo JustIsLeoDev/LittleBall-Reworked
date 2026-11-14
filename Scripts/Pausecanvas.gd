@@ -118,3 +118,5 @@ func _on_sfx_value_changed(value: float) -> void:
 func _on_option_button_item_selected(index: int) -> void:
 	Global.language_item_sel(index)
 	pass # Replace with function body.
+func is_music_muted() -> bool:
+	return music_volume <= 0.0

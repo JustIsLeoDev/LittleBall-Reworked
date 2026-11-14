@@ -38,6 +38,7 @@ offset_top = -40.0
 grow_horizontal = 0
 grow_vertical = 0
 pivot_offset = Vector2(20, 20)
+mouse_filter = 2
 texture = ExtResource("2_6b4sy")
 expand_mode = 1
 
@@ -50,6 +51,7 @@ anchor_right = 0.758
 anchor_bottom = 0.836
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 theme = SubResource("Theme_6b4sy")
 bbcode_enabled = true
 text = "PlaceHolder"

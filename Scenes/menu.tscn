@@ -20,6 +20,7 @@ default_font = ExtResource("2_cayip")
 default_font_size = 65
 
 [node name="Menu" type="CanvasLayer" unique_id=1401566200]
+layer = 0
 script = ExtResource("1_wwsa2")
 
 [node name="ColorRect3" type="ColorRect" parent="." unique_id=1484938338]
