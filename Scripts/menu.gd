@@ -26,7 +26,9 @@ func _ready() -> void:
 func _on_play_pressed() -> void:
 	PM.info_print("Play button")
 	#get_tree().change_scene_to_file("res://Scenes/Stage1LVL1.tscn")
-	get_tree().change_scene_to_file("res://Scenes/Menu2.tscn")
+	
+	#get_tree().change_scene_to_file("res://Scenes/Menu2.tscn")
+	get_tree().change_scene_to_file("res://Scenes/test_dream_transition.tscn")
 	reiniciar_valores()
 
 func _on_quit_pressed() -> void:
@@ -36,6 +38,7 @@ func _on_quit_pressed() -> void:
 func _on_estadisticas_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/estadisticas.tscn")
 func reiniciar_valores():
+	Global.actual_player = 0
 	Global.muertes = 0
 	Global.can_pause = true
 

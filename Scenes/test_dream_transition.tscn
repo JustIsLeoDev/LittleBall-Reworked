@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://chyowkkdlk0xw"]
+
+[ext_resource type="PackedScene" uid="uid://dt2dtumsechbj" path="res://Scenes/Menu2.tscn" id="1_jv8xp"]
+[ext_resource type="Texture2D" uid="uid://ds37sr5m5vrhi" path="res://Sprites/nube.png" id="1_k43y7"]
+[ext_resource type="Script" uid="uid://c3tytpvv4cbrp" path="res://Scripts/test_dream_transition.gd" id="1_yc2qr"]
+[ext_resource type="PackedScene" uid="uid://bs6yas3t8v25k" path="res://Scenes/level_selector.tscn" id="3_hxxvp"]
+[ext_resource type="PackedScene" uid="uid://cwkbvax7ad7fg" path="res://Scenes/Camera.tscn" id="4_yc2qr"]
+[ext_resource type="PackedScene" uid="uid://b0imh1qcacpqm" path="res://Scenes/Player.tscn" id="5_hxxvp"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_w8cml"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Test Dream transition" type="Node2D" unique_id=969765231 node_paths=PackedStringArray("camera", "target", "menu2", "subviewport", "desaparecer")]
+script = ExtResource("1_yc2qr")
+camera = NodePath("Camera2D")
+target = NodePath("Player")
+menu2 = NodePath("SubViewport/Node2D")
+subviewport = NodePath("SubViewport")
+desaparecer = [NodePath("Nube"), NodePath("Sprite2D")]
+
+[node name="Camera2D" parent="." unique_id=935593069 instance=ExtResource("4_yc2qr")]
+position = Vector2(-2158.2734, -840.49884)
+scale = Vector2(8.986, 12.785)
+zoom = Vector2(1.05, 1.05)
+ID_cam = "CamDreamLevelSelectorMenu2"
+
+[node name="Nube" type="Sprite2D" parent="." unique_id=1411496398]
+visible = false
+position = Vector2(-2156, -907)
+scale = Vector2(1.8803089, 1.6500001)
+texture = ExtResource("1_k43y7")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=547288710]
+size = Vector2i(640, 480)
+
+[node name="Node2D" parent="SubViewport" unique_id=1663724174 instance=ExtResource("1_jv8xp")]
+
+[node name="LevelSelector" parent="." unique_id=1482330923 instance=ExtResource("3_hxxvp")]
+
+[node name="Player" parent="." unique_id=1081606873 instance=ExtResource("5_hxxvp")]
+position = Vector2(-2753, -285)
+ID = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1690985684]
+position = Vector2(-2158, -841)
+texture = SubResource("ViewportTexture_w8cml")

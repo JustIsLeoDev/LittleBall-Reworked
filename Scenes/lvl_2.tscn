@@ -113,4 +113,6 @@ current = true
 
 [node name="Node2D" parent="." unique_id=1832108446 instance=ExtResource("11_58cxm")]
 position = Vector2(299, -8124)
+scale = Vector2(1, 0.9229673)
+target_room = "res://Scenes/test_dream_transition.tscn"
 level_fade = 3.0

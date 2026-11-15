@@ -32,6 +32,7 @@ var debug_hour: float = 12.0
 
 
 func _ready() -> void:
+	$Sky.visible = true
 	debug_time_button.button_pressed = Global.debug
 	debug_time_button.toggled.connect(_on_debug_time_toggled)
 	time_slider.min_value = 0.0

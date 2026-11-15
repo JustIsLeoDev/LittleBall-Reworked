@@ -20,13 +20,16 @@ var lowpass_request_count: int = 0
 var focus_out_count: int = 0
 var focus_in_count: int = 0
 
+const CONFIG_PATH: String = "user://settings.cfg"
+const DEFAULT_VOLUME: float = 100.0
+
 @export var filter_time: float = 1.0
 @export var lowpass_debug: bool = false
 @export var audit_interval: float = 0.5
 
 
 func _ready() -> void:
-	get_tree().debug_collisions_hint = true
+	#get_tree().debug_collisions_hint = true
 
 	previous_global_pause = Global.pause
 	previous_tree_paused = get_tree().paused
@@ -71,12 +74,7 @@ func _ready() -> void:
 	if effect:
 		effect.cutoff_hz = 20000.0
 		last_audited_cutoff = effect.cutoff_hz
-
-		_log_lowpass(
-			"INIT",
-			"Lowpass encontrado. Índice=%d, cutoff=%.1f Hz"
-			% [effect_index, effect.cutoff_hz]
-		)
+		_log_lowpass("INIT", "Lowpass encontrado.")
 	else:
 		_log_lowpass("ERROR", "No se encontró AudioEffectLowPassFilter en Music.")
 
@@ -91,10 +89,104 @@ func _ready() -> void:
 			_log_lowpass("INIT", "sets: %s | ID=%d" % [str(node.get_path()), node.get_instance_id()])
 
 	add_to_group("sets")
-	set_window_mode()
+
+	load_window_mode()
+	load_audio_settings()
 
 	_log_lowpass("INIT", "Monitor inicializado.")
 
+
+# --------------------------------------------------
+# CONFIGURACIÓN DE VENTANA
+# --------------------------------------------------
+
+func save_window_mode() -> void:
+	var config: ConfigFile = ConfigFile.new()
+	config.load(CONFIG_PATH)
+
+	config.set_value("Display", "fullscreen", fullscreen)
+
+	var error: Error = config.save(CONFIG_PATH)
+
+	if error != OK:
+		PM.error_print("[DISPLAY] No se pudo guardar la configuración: %s" % error_string(error))
+
+
+func load_window_mode() -> void:
+	var config: ConfigFile = ConfigFile.new()
+	var error: Error = config.load(CONFIG_PATH)
+
+	if error == OK:
+		fullscreen = config.get_value("Display", "fullscreen", false)
+	else:
+		fullscreen = false
+
+	set_window_mode()
+
+
+func set_window_mode() -> void:
+	if fullscreen:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_size(Vector2i(640, 480))
+
+		var screen_size: Vector2i = DisplayServer.screen_get_size()
+		var window_size: Vector2i = Vector2i(640, 480)
+
+		var position_x: int = (screen_size.x - window_size.x) / 2
+		var position_y: int = (screen_size.y - window_size.y) / 2
+
+		DisplayServer.window_set_position(Vector2i(position_x, position_y))
+
+
+# --------------------------------------------------
+# CONFIGURACIÓN DE AUDIO
+# Compatible con PauseMenu
+# --------------------------------------------------
+
+func load_audio_settings() -> void:
+	var config: ConfigFile = ConfigFile.new()
+	var error: Error = config.load(CONFIG_PATH)
+
+	var music_volume: float = DEFAULT_VOLUME
+	var sfx_volume: float = DEFAULT_VOLUME
+
+	if error == OK:
+		music_volume = clampf(
+			config.get_value("audio", "music_volume", DEFAULT_VOLUME),
+			0.0,
+			100.0
+		)
+
+		sfx_volume = clampf(
+			config.get_value("audio", "sfx_volume", DEFAULT_VOLUME),
+			0.0,
+			100.0
+		)
+
+	apply_bus_volume("Music", music_volume)
+	apply_bus_volume("SFX", sfx_volume)
+
+
+func apply_bus_volume(bus_name: String, value: float) -> void:
+	var bus_index: int = AudioServer.get_bus_index(bus_name)
+
+	if bus_index < 0:
+		_log_lowpass("ERROR", "No se encontró el bus: " + bus_name)
+		return
+
+	var volume_db: float = -80.0
+
+	if value > 0.0:
+		volume_db = linear_to_db(value / 100.0) + 5.0
+
+	AudioServer.set_bus_volume_db(bus_index, volume_db)
+
+
+# --------------------------------------------------
+# DEPURACIÓN LOWPASS
+# --------------------------------------------------
 
 func _log_lowpass(category: String, message: String) -> void:
 	if not lowpass_debug:
@@ -153,23 +245,14 @@ func set_lowpass(cutoff: float) -> void:
 		return
 
 	if filter_tween and filter_tween.is_running():
-		_log_lowpass(
-			"TWEEN",
-			"Cancelando tween anterior. Cutoff actual=%.1f Hz"
-			% effect.cutoff_hz
-		)
+		_log_lowpass("TWEEN", "Cancelando tween anterior. Cutoff actual=%.1f Hz" % effect.cutoff_hz)
 		filter_tween.kill()
 
 	filter_tween = create_tween()
 	filter_tween.set_trans(Tween.TRANS_SINE)
 	filter_tween.set_ease(Tween.EASE_IN_OUT)
 
-	filter_tween.tween_property(
-		effect,
-		"cutoff_hz",
-		cutoff,
-		filter_time
-	)
+	filter_tween.tween_property(effect, "cutoff_hz", cutoff, filter_time)
 
 	_log_lowpass(
 		"TWEEN",
@@ -177,9 +260,7 @@ func set_lowpass(cutoff: float) -> void:
 		% [effect.cutoff_hz, cutoff, filter_time]
 	)
 
-	filter_tween.finished.connect(
-		_on_lowpass_tween_finished.bind(cutoff)
-	)
+	filter_tween.finished.connect(_on_lowpass_tween_finished.bind(cutoff))
 
 
 func _on_lowpass_tween_finished(target_cutoff: float) -> void:
@@ -191,12 +272,7 @@ func _on_lowpass_tween_finished(target_cutoff: float) -> void:
 	_log_lowpass(
 		"TWEEN",
 		"Finalizado. Objetivo=%.1f Hz | real=%.1f Hz | Global.pause=%s | lowpass=%s"
-		% [
-			target_cutoff,
-			effect.cutoff_hz,
-			str(Global.pause),
-			str(lowpass)
-		]
+		% [target_cutoff, effect.cutoff_hz, str(Global.pause), str(lowpass)]
 	)
 
 
@@ -246,11 +322,7 @@ func _audit_state() -> void:
 		_log_lowpass(
 			"PAUSE",
 			"SceneTree.paused cambió: %s -> %s | Global.pause=%s"
-			% [
-				str(previous_tree_paused),
-				str(get_tree().paused),
-				str(Global.pause)
-			]
+			% [str(previous_tree_paused), str(get_tree().paused), str(Global.pause)]
 		)
 
 		previous_tree_paused = get_tree().paused
@@ -262,12 +334,7 @@ func _audit_state() -> void:
 			_log_lowpass(
 				"SCENE",
 				"Cambio de escena: %s -> %s | Global.pause=%s | lowpass=%s"
-				% [
-					previous_scene_path,
-					scene_path,
-					str(Global.pause),
-					str(lowpass)
-				]
+				% [previous_scene_path, scene_path, str(Global.pause), str(lowpass)]
 			)
 
 			previous_scene_path = scene_path
@@ -285,21 +352,9 @@ func _audit_state() -> void:
 		previous_player_id = player_id
 
 
-func set_window_mode() -> void:
-	if fullscreen:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		DisplayServer.window_set_size(Vector2i(640, 480))
-
-		var screen_size: Vector2i = DisplayServer.screen_get_size()
-		var window_size: Vector2i = Vector2i(640, 480)
-
-		var position_x: int = (screen_size.x - window_size.x) / 2
-		var position_y: int = (screen_size.y - window_size.y) / 2
-
-		DisplayServer.window_set_position(Vector2i(position_x, position_y))
-
+# --------------------------------------------------
+# INPUT
+# --------------------------------------------------
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F6:
@@ -309,6 +364,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_released("F4"):
 		fullscreen = not fullscreen
 		set_window_mode()
+		save_window_mode()
 
 	if event.is_action_pressed("Pause") and Global.can_pause:
 		_log_lowpass("INPUT", "Acción Pause recibida. Global.pause=%s" % str(Global.pause))
@@ -316,30 +372,31 @@ func _input(event: InputEvent) -> void:
 		_log_lowpass("INPUT", "PauseMenu.toggle_pause() ejecutado.")
 
 	if Global.debug:
-		pass
-		#if event.is_action_pressed("1"):
-		#	MusicManager.try_play_music(MusicManager.s1)
-		#if event.is_action_pressed("2"):
-		#	MusicManager.try_play_music(MusicManager.s2)
-		#if event.is_action_pressed("3"):
-		#	MusicManager.try_play_music(MusicManager.s3)
-		#if event.is_action_pressed("4"):
-		#	MusicManager.try_play_music(MusicManager.s4)
-		#if event.is_action_pressed("5"):
-		#	MusicManager.try_play_music(MusicManager.s5)
-		#if event.is_action_pressed("6"):
-		#	MusicManager.try_play_music(MusicManager.s6)
-		#if event.is_action_pressed("7"):
-		#	MusicManager.try_play_music(MusicManager.s7)
-		#if event.is_action_pressed("8"):
-		#	MusicManager.try_play_music(MusicManager.s8)
-		#if event.is_action_pressed("9"):
-		#	MusicManager.try_play_music(MusicManager.s9)
-
 		if event.is_action_pressed("Reiniciar"):
 			if Global.can_reset:
+				var is_transition_scene: bool = false
+
+				if is_instance_valid(get_tree().current_scene):
+					is_transition_scene = get_tree().current_scene.scene_file_path == "res://Scenes/test_dream_transition.tscn"
+
+				if is_transition_scene:
+					var transition: Node = get_tree().get_first_node_in_group("scene_transition")
+
+					if is_instance_valid(transition):
+						if transition.Actual_room == 1:
+							return
+
 				Points._reset_key()
+
 				get_tree().reload_current_scene()
+
+				if is_transition_scene:
+					await get_tree().scene_changed
+
+					var transition: Node = get_tree().get_first_node_in_group("scene_transition")
+
+					if is_instance_valid(transition):
+						transition.set_state(transition.STATE.AFTER_TRANSITION)
 
 				if Global.dificulty == "masoquista":
 					Global.muertes += 1
@@ -349,14 +406,19 @@ func _input(event: InputEvent) -> void:
 
 		if event.is_action_pressed("0"):
 			MusicManager.try_play_music(MusicManager.s10)
+
 		if event.is_action_pressed("F5"):
 			Global.save_levels()
+
 		if event.is_action_pressed("supr"):
 			Points._toggle_visible()
+
 		if event.is_action_pressed("inicio"):
 			Points._start_timer()
+
 		if event.is_action_pressed("fin"):
 			Points._stop_timer()
+
 		if event.is_action_pressed("avpag"):
 			Points._end_level()
 
@@ -377,6 +439,10 @@ func _input(event: InputEvent) -> void:
 			if fog:
 				fog.visible = enabled
 
+
+# --------------------------------------------------
+# NOTIFICACIONES
+# --------------------------------------------------
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
@@ -400,6 +466,10 @@ func _notification(what: int) -> void:
 		)
 
 
+# --------------------------------------------------
+# PROCESS
+# --------------------------------------------------
+
 func _process(delta: float) -> void:
 	_audit_state()
 
@@ -409,12 +479,7 @@ func _process(delta: float) -> void:
 		_log_lowpass(
 			"STATE",
 			"Estado lowpass: %s -> %s | Global.pause=%s | foco_perdido=%s"
-			% [
-				str(last_lowpass),
-				str(new_lowpass),
-				str(Global.pause),
-				str(lowpass)
-			]
+			% [str(last_lowpass), str(new_lowpass), str(Global.pause), str(lowpass)]
 		)
 
 		last_lowpass = new_lowpass

@@ -11,6 +11,8 @@ var music_bypass: bool = false
 var levels_path: String = ""
 const CONFIG_PATH: String = "user://config.cfg"
 
+var actual_player = 0
+
 func save_levels() -> void:
 	var data: Dictionary = {
 		"levels": levels,
@@ -226,7 +228,8 @@ var datos_canciones: Array[Array] = [
 	["La cancion que más odio", "res://Music/s112.ogg", "", 185.0, true],
 	["s1222", "res://Music/s1222.ogg", "", 165.0, true],
 	["silent", "res://Music/silent.ogg", "", 185.0, true],
-	["stage 7", "res://Music/stage 7.ogg", "", 185.0, true]
+	["stage 7", "res://Music/stage 7.ogg", "", 185.0, true],
+	["Genesis 2", "res://Music/genesis2.ogg", "", 64, true]
 ]
 
 
