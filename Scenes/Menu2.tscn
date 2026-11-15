@@ -56,6 +56,9 @@ size = Vector2(135, 1004)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xed7o"]
 size = Vector2(697, 20)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0i7lw"]
+size = Vector2(1981.2659, 20)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cfia6"]
 size = Vector2(836, 101.095215)
 
@@ -211,6 +214,10 @@ disabled = true
 [node name="CollisionShape2D9" type="CollisionShape2D" parent="Node2D/StaticBody2D" unique_id=715289642]
 position = Vector2(338.5, 0)
 shape = SubResource("RectangleShape2D_xed7o")
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="Node2D/StaticBody2D" unique_id=55667250]
+position = Vector2(-649.63293, 4578.6367)
+shape = SubResource("RectangleShape2D_0i7lw")
 
 [node name="Area2D" type="Area2D" parent="Node2D" unique_id=1443638791 node_paths=PackedStringArray("camera")]
 script = ExtResource("5_3jkhj")

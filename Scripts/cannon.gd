@@ -5,7 +5,6 @@ extends Area2D
 @export var launch_impulse: float = 150.0
 @export var exit_jump_force: float = 1400.0
 @export var directioncam: Vector2 = Vector2.RIGHT
-@export var cam: Camera2D
 @export var target_level: String
 @export var alpha_hide_time: float = 2.0
 @export var alpha_show_time: float = 0.35
@@ -15,6 +14,8 @@ extends Area2D
 @onready var colision2: CollisionShape2D = $Node2D/StaticBody2D/CollisionShape2D2
 @onready var colision3: CollisionShape2D = $Node2D/StaticBody2D/CollisionShape2D3
 @onready var collision_parent: Node2D = $Node2D
+
+var cam
 
 var target_alpha: float = 1.0
 var launch_time: float = 0.0
@@ -28,6 +29,25 @@ var cannon_returning: bool = false
 var cannon_return_time: float = 0.0
 var cannon_start_rotation: float = 0.0
 
+func _ready() -> void:
+	cam = get_tree().get_first_node_in_group("CamDreamLevelSelectorMenu2")
+
+	if cam == null:
+		PM.error_print("No se encontró CamDreamLevelSelectorMenu2")
+	else:
+		print("Cámara seleccionada: ", cam.get_path())
+	#var cameras: Array[Node] = get_tree().get_nodes_in_group("Cam")
+#
+	#for camera: Node in cameras:
+	#	print("Cámara: ", camera.get_path())
+	#	print("Escena: ", camera.scene_file_path)
+#
+	#	if camera.scene_file_path == get_tree().current_scene.scene_file_path:
+	#		cam = camera
+	#		break
+#
+	#if cam == null:
+	#	PM.error_print("No se encontró la cámara de esta escena")
 func _process(delta: float) -> void:
 	var alpha_speed: float = 1.0 / alpha_hide_time
 	if target_alpha > cannon_sprite.modulate.a:

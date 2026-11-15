@@ -11,6 +11,9 @@ enum MODE {
 	CINEMATIC
 }
 
+
+@export var ID_cam:String= "Cam"
+
 @export var cinematic_points: Array[CameraPoint] = []
 @export var mode: MODE = MODE.STATIC
 
@@ -52,7 +55,10 @@ var cinematic_start_position: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
-	add_to_group("Cam")
+	if ID_cam != "Cam":
+		add_to_group(str(ID_cam))
+	else:
+		add_to_group("Cam")
 
 	base_zoom = zoom
 	base_rotation = rotation
@@ -64,29 +70,33 @@ func _ready() -> void:
 	trigger_bpm_shake(80.0, 0.0, 180.0)
 
 
-func _process(delta: float) -> void:
-	if target:
-		match mode:
-			MODE.STATIC:
-				pass
 
-			MODE.FOLLOWXY:
+func _process(delta: float) -> void:
+	match mode:
+		MODE.STATIC:
+			pass
+
+		MODE.FOLLOWXY:
+			if is_instance_valid(target):
 				global_position = target.global_position
 
-			MODE.FOLLOWX:
+		MODE.FOLLOWX:
+			if is_instance_valid(target):
 				global_position.x = target.global_position.x
 
-			MODE.FOLLOWY:
+		MODE.FOLLOWY:
+			if is_instance_valid(target):
 				global_position.y = target.global_position.y
 
-			MODE.CINEMATIC:
-				process_cinematic(delta)
+		MODE.CINEMATIC:
+			process_cinematic(delta)
 
 	process_shake(delta)
 	process_drunk(delta)
 	process_drunk_window(delta)
 
 	offset = shake_offset + drunk_offset
+
 
 
 func process_shake(delta: float) -> void:

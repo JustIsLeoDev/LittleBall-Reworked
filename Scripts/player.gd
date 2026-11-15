@@ -1,5 +1,13 @@
 class_name Player
 extends CharacterBody2D
+
+@export var ID:int
+
+
+
+
+
+
 @export_category("Heavy Mechanic")
 @export var heavy_fall_multiplier: float = 2.5
 @export var heavy_landing_scale: Vector2 = Vector2(1.5, 0.5)
@@ -429,6 +437,10 @@ func _process(_delta: float) -> void:
 	else:
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 func _physics_process(delta: float) -> void:
+	if ID != Global.actual_player:
+		#await get_tree().create_timer(5.0).timeout
+		velocity = Vector2.ZERO
+		return
 	if is_on_floor():
 		cant_act_count = max_can_act
 	can_act = cant_act_count > 0

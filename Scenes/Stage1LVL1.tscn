@@ -193,3 +193,4 @@ current = true
 
 [node name="Node2D4" parent="." unique_id=1832108446 instance=ExtResource("14_m1q2x")]
 position = Vector2(2991, -1726)
+target_room = "res://Scenes/test_dream_transition.tscn"

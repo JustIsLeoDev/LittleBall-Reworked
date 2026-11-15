@@ -11,4 +11,6 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
-		Transition.change_scene("res://Scenes/level_selector.tscn")
+		Global.actual_player = 1
+	#	Transition.change_scene("res://Scenes/level_selector.tscn")}
+	
